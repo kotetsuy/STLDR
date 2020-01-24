@@ -7,7 +7,7 @@ __root struct StorageInfo const StorageInfo  =  {
 struct StorageInfo const StorageInfo  =  {
 #endif
    "W25Q128_STM32F412ZG", 	 					// Device Name + EVAL Borad name
-   SPI_FLASH,                   					// Device Type
+   NOR_FLASH,                   					// Device Type
    0x90000000,                						// Device Start Address
    0x1000000,                 						// Device Size in Bytes (16MBytes)
    0x100,                    						// Programming Page Size 256Bytes

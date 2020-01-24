@@ -169,7 +169,10 @@ HAL_StatusTypeDef W25Q128JV_Init(void)
 		return ret;
 	}
 
-	HAL_Delay(100);
+	//HAL_Delay(100);
+	for (__IO uint32_t i = 0; i < 10000; i++) {
+		__NOP();
+	}
 
 	/* Read Volatile Configuration register 2 --------------------------- */
 	sCommand.InstructionMode   = QSPI_INSTRUCTION_1_LINE;

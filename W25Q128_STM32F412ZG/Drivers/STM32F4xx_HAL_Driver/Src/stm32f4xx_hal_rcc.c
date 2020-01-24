@@ -252,30 +252,36 @@ __weak HAL_StatusTypeDef HAL_RCC_OscConfig(RCC_OscInitTypeDef  *RCC_OscInitStruc
       /* Check the HSE State */
       if((RCC_OscInitStruct->HSEState) != RCC_HSE_OFF)
       {
+#if 0
         /* Get Start Tick */
         tickstart = HAL_GetTick();
-
+#endif
         /* Wait till HSE is ready */
         while(__HAL_RCC_GET_FLAG(RCC_FLAG_HSERDY) == RESET)
         {
+#if 0
           if((HAL_GetTick() - tickstart ) > HSE_TIMEOUT_VALUE)
           {
             return HAL_TIMEOUT;
           }
+#endif
         }
       }
       else
       {
+#if 0
         /* Get Start Tick */
         tickstart = HAL_GetTick();
-
+#endif
         /* Wait till HSE is bypassed or disabled */
         while(__HAL_RCC_GET_FLAG(RCC_FLAG_HSERDY) != RESET)
         {
+#if 0
           if((HAL_GetTick() - tickstart ) > HSE_TIMEOUT_VALUE)
           {
             return HAL_TIMEOUT;
           }
+#endif
         }
       }
     }
@@ -310,17 +316,19 @@ __weak HAL_StatusTypeDef HAL_RCC_OscConfig(RCC_OscInitTypeDef  *RCC_OscInitStruc
       {
         /* Enable the Internal High Speed oscillator (HSI). */
         __HAL_RCC_HSI_ENABLE();
-
+#if 0
         /* Get Start Tick*/
         tickstart = HAL_GetTick();
-
+#endif
         /* Wait till HSI is ready */
         while(__HAL_RCC_GET_FLAG(RCC_FLAG_HSIRDY) == RESET)
         {
-          if((HAL_GetTick() - tickstart ) > HSI_TIMEOUT_VALUE)
+#if 0
+        	if((HAL_GetTick() - tickstart ) > HSI_TIMEOUT_VALUE)
           {
             return HAL_TIMEOUT;
           }
+#endif
         }
 
         /* Adjusts the Internal High Speed oscillator (HSI) calibration value. */
@@ -330,17 +338,19 @@ __weak HAL_StatusTypeDef HAL_RCC_OscConfig(RCC_OscInitTypeDef  *RCC_OscInitStruc
       {
         /* Disable the Internal High Speed oscillator (HSI). */
         __HAL_RCC_HSI_DISABLE();
-
+#if 0
         /* Get Start Tick*/
         tickstart = HAL_GetTick();
-
+#endif
         /* Wait till HSI is ready */
         while(__HAL_RCC_GET_FLAG(RCC_FLAG_HSIRDY) != RESET)
         {
-          if((HAL_GetTick() - tickstart ) > HSI_TIMEOUT_VALUE)
+#if 0
+        	if((HAL_GetTick() - tickstart ) > HSI_TIMEOUT_VALUE)
           {
             return HAL_TIMEOUT;
           }
+#endif
         }
       }
     }
@@ -356,34 +366,38 @@ __weak HAL_StatusTypeDef HAL_RCC_OscConfig(RCC_OscInitTypeDef  *RCC_OscInitStruc
     {
       /* Enable the Internal Low Speed oscillator (LSI). */
       __HAL_RCC_LSI_ENABLE();
-
+#if 0
       /* Get Start Tick*/
       tickstart = HAL_GetTick();
-
+#endif
       /* Wait till LSI is ready */
       while(__HAL_RCC_GET_FLAG(RCC_FLAG_LSIRDY) == RESET)
       {
-        if((HAL_GetTick() - tickstart ) > LSI_TIMEOUT_VALUE)
+#if 0
+    	  if((HAL_GetTick() - tickstart ) > LSI_TIMEOUT_VALUE)
         {
           return HAL_TIMEOUT;
         }
+#endif
       }
     }
     else
     {
       /* Disable the Internal Low Speed oscillator (LSI). */
       __HAL_RCC_LSI_DISABLE();
-
+#if 0
       /* Get Start Tick */
       tickstart = HAL_GetTick();
-
+#endif
       /* Wait till LSI is ready */
       while(__HAL_RCC_GET_FLAG(RCC_FLAG_LSIRDY) != RESET)
       {
-        if((HAL_GetTick() - tickstart ) > LSI_TIMEOUT_VALUE)
+#if 0
+    	  if((HAL_GetTick() - tickstart ) > LSI_TIMEOUT_VALUE)
         {
           return HAL_TIMEOUT;
         }
+#endif
       }
     }
   }
@@ -407,16 +421,18 @@ __weak HAL_StatusTypeDef HAL_RCC_OscConfig(RCC_OscInitTypeDef  *RCC_OscInitStruc
     {
       /* Enable write access to Backup domain */
       SET_BIT(PWR->CR, PWR_CR_DBP);
-
+#if 0
       /* Wait for Backup domain Write protection disable */
       tickstart = HAL_GetTick();
-
+#endif
       while(HAL_IS_BIT_CLR(PWR->CR, PWR_CR_DBP))
       {
-        if((HAL_GetTick() - tickstart) > RCC_DBP_TIMEOUT_VALUE)
+#if 0
+    	  if((HAL_GetTick() - tickstart) > RCC_DBP_TIMEOUT_VALUE)
         {
           return HAL_TIMEOUT;
         }
+#endif
       }
     }
 
@@ -425,30 +441,36 @@ __weak HAL_StatusTypeDef HAL_RCC_OscConfig(RCC_OscInitTypeDef  *RCC_OscInitStruc
     /* Check the LSE State */
     if((RCC_OscInitStruct->LSEState) != RCC_LSE_OFF)
     {
-      /* Get Start Tick*/
+#if 0
+    	/* Get Start Tick*/
       tickstart = HAL_GetTick();
-
+#endif
       /* Wait till LSE is ready */
       while(__HAL_RCC_GET_FLAG(RCC_FLAG_LSERDY) == RESET)
       {
-        if((HAL_GetTick() - tickstart ) > RCC_LSE_TIMEOUT_VALUE)
+#if 0
+    	  if((HAL_GetTick() - tickstart ) > RCC_LSE_TIMEOUT_VALUE)
         {
           return HAL_TIMEOUT;
         }
+#endif
       }
     }
     else
     {
-      /* Get Start Tick */
+#if 0
+    	/* Get Start Tick */
       tickstart = HAL_GetTick();
-
+#endif
       /* Wait till LSE is ready */
       while(__HAL_RCC_GET_FLAG(RCC_FLAG_LSERDY) != RESET)
       {
-        if((HAL_GetTick() - tickstart ) > RCC_LSE_TIMEOUT_VALUE)
+#if 0
+    	  if((HAL_GetTick() - tickstart ) > RCC_LSE_TIMEOUT_VALUE)
         {
           return HAL_TIMEOUT;
         }
+#endif
       }
     }
 
@@ -477,17 +499,19 @@ __weak HAL_StatusTypeDef HAL_RCC_OscConfig(RCC_OscInitTypeDef  *RCC_OscInitStruc
 
         /* Disable the main PLL. */
         __HAL_RCC_PLL_DISABLE();
-
+#if 0
         /* Get Start Tick */
         tickstart = HAL_GetTick();
-
+#endif
         /* Wait till PLL is ready */
         while(__HAL_RCC_GET_FLAG(RCC_FLAG_PLLRDY) != RESET)
         {
+#if 0
           if((HAL_GetTick() - tickstart ) > PLL_TIMEOUT_VALUE)
           {
             return HAL_TIMEOUT;
           }
+#endif
         }
 
         /* Configure the main PLL clock source, multiplication and division factors. */
@@ -498,34 +522,38 @@ __weak HAL_StatusTypeDef HAL_RCC_OscConfig(RCC_OscInitTypeDef  *RCC_OscInitStruc
                                  (RCC_OscInitStruct->PLL.PLLQ << RCC_PLLCFGR_PLLQ_Pos)));
         /* Enable the main PLL. */
         __HAL_RCC_PLL_ENABLE();
-
+#if 0
         /* Get Start Tick */
         tickstart = HAL_GetTick();
-
+#endif
         /* Wait till PLL is ready */
         while(__HAL_RCC_GET_FLAG(RCC_FLAG_PLLRDY) == RESET)
         {
-          if((HAL_GetTick() - tickstart ) > PLL_TIMEOUT_VALUE)
+#if 0
+        	if((HAL_GetTick() - tickstart ) > PLL_TIMEOUT_VALUE)
           {
             return HAL_TIMEOUT;
           }
+#endif
         }
       }
       else
       {
         /* Disable the main PLL. */
         __HAL_RCC_PLL_DISABLE();
-
+#if 0
         /* Get Start Tick */
         tickstart = HAL_GetTick();
-
+#endif
         /* Wait till PLL is ready */
         while(__HAL_RCC_GET_FLAG(RCC_FLAG_PLLRDY) != RESET)
         {
-          if((HAL_GetTick() - tickstart ) > PLL_TIMEOUT_VALUE)
+#if 0
+        	if((HAL_GetTick() - tickstart ) > PLL_TIMEOUT_VALUE)
           {
             return HAL_TIMEOUT;
           }
+#endif
         }
       }
     }
@@ -665,16 +693,18 @@ HAL_StatusTypeDef HAL_RCC_ClockConfig(RCC_ClkInitTypeDef  *RCC_ClkInitStruct, ui
     }
 
     __HAL_RCC_SYSCLK_CONFIG(RCC_ClkInitStruct->SYSCLKSource);
-
+#if 0
     /* Get Start Tick */
     tickstart = HAL_GetTick();
-
+#endif
     while (__HAL_RCC_GET_SYSCLK_SOURCE() != (RCC_ClkInitStruct->SYSCLKSource << RCC_CFGR_SWS_Pos))
     {
-      if ((HAL_GetTick() - tickstart) > CLOCKSWITCH_TIMEOUT_VALUE)
+#if 0
+    	if ((HAL_GetTick() - tickstart) > CLOCKSWITCH_TIMEOUT_VALUE)
       {
         return HAL_TIMEOUT;
       }
+#endif
     }
   }
 
@@ -710,8 +740,9 @@ HAL_StatusTypeDef HAL_RCC_ClockConfig(RCC_ClkInitTypeDef  *RCC_ClkInitStruct, ui
   SystemCoreClock = HAL_RCC_GetSysClockFreq() >> AHBPrescTable[(RCC->CFGR & RCC_CFGR_HPRE)>> RCC_CFGR_HPRE_Pos];
 
   /* Configure the source of time base considering new system clocks settings */
+#if 0
   HAL_InitTick (uwTickPrio);
-
+#endif
   return HAL_OK;
 }
 

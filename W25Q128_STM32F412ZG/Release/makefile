@@ -39,8 +39,8 @@ W25Q128_STM32F412ZG.bin \
 all: W25Q128_STM32F412ZG.elf secondary-outputs
 
 # Tool invocations
-W25Q128_STM32F412ZG.elf: $(OBJS) $(USER_OBJS) D:\ST\STLDR\W25Q128_STM32F412ZG\_FLASH.ld
-	arm-none-eabi-gcc -o "W25Q128_STM32F412ZG.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"D:\ST\STLDR\W25Q128_STM32F412ZG\_FLASH.ld" --specs=nosys.specs -Wl,-Map="W25Q128_STM32F412ZG.map" -nostdlib -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+W25Q128_STM32F412ZG.elf: $(OBJS) $(USER_OBJS) D:\temp\STLDR\W25Q128_STM32F412ZG\_FLASH.ld
+	arm-none-eabi-gcc -o "W25Q128_STM32F412ZG.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"D:\temp\STLDR\W25Q128_STM32F412ZG\_FLASH.ld" --specs=nosys.specs -Wl,-Map="W25Q128_STM32F412ZG.map" -nostdlib -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

@@ -14,7 +14,7 @@
 
 
 
-#define SECTOR_NUM 256				// Max Number of Sector types
+#define SECTOR_NUM 10				// Max Number of Sector types
 
 struct DeviceSectors  
 {

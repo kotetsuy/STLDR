@@ -5,19 +5,19 @@ Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
   0 .text         00003094  20000004  20000004  00010004  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  1 .rodata       00000898  20003098  20003098  00013098  2**2
+  1 .rodata       000000e8  20003098  20003098  00013098  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  2 .ARM          00000008  20003930  20003930  00013930  2**2
+  2 .ARM          00000008  20003180  20003180  00013180  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  3 .data         0000000c  20003938  20003938  00013938  2**2
+  3 .data         0000000c  20003188  20003188  00013188  2**2
                   CONTENTS, ALLOC, LOAD, DATA
-  4 .bss          00000054  20003944  20003944  00013944  2**2
+  4 .bss          00000054  20003194  20003194  00013194  2**2
                   ALLOC
-  5 .ARM.attributes 00000039  00000000  00000000  00013944  2**0
+  5 .ARM.attributes 00000039  00000000  00000000  00013194  2**0
                   CONTENTS, READONLY
-  6 .comment      0000007b  00000000  00000000  0001397d  2**0
+  6 .comment      0000007b  00000000  00000000  000131cd  2**0
                   CONTENTS, READONLY
-  7 .debug_frame  00000020  00000000  00000000  000139f8  2**2
+  7 .debug_frame  00000020  00000000  00000000  00013248  2**2
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -468,7 +468,7 @@ Disassembly of section .text:
 200004bc:	b004      	add	sp, #16
 200004be:	bd10      	pop	{r4, pc}
 200004c0:	40023800 	.word	0x40023800
-200004c4:	20003948 	.word	0x20003948
+200004c4:	20003198 	.word	0x20003198
 200004c8:	a0001000 	.word	0xa0001000
 
 200004cc <Write>:
@@ -794,9 +794,9 @@ Disassembly of section .text:
 200007e0:	e7db      	b.n	2000079a <SystemCoreClockUpdate+0x16>
 200007e2:	bf00      	nop
 200007e4:	40023800 	.word	0x40023800
-200007e8:	20003938 	.word	0x20003938
+200007e8:	20003188 	.word	0x20003188
 200007ec:	00f42400 	.word	0x00f42400
-200007f0:	20003910 	.word	0x20003910
+200007f0:	20003160 	.word	0x20003160
 200007f4:	017d7840 	.word	0x017d7840
 
 200007f8 <QSPI_WriteEnable.constprop.0>:
@@ -839,7 +839,7 @@ Disassembly of section .text:
 2000085a:	b014      	add	sp, #80	; 0x50
 2000085c:	bd10      	pop	{r4, pc}
 2000085e:	bf00      	nop
-20000860:	20003948 	.word	0x20003948
+20000860:	20003198 	.word	0x20003198
 
 20000864 <W25Q128JV_AutoPollingMemReady>:
 20000864:	b530      	push	{r4, r5, lr}
@@ -883,8 +883,8 @@ Disassembly of section .text:
 200008be:	bd30      	pop	{r4, r5, pc}
 200008c0:	2001      	movs	r0, #1
 200008c2:	e7fb      	b.n	200008bc <W25Q128JV_AutoPollingMemReady+0x58>
-200008c4:	20003946 	.word	0x20003946
-200008c8:	20003948 	.word	0x20003948
+200008c4:	20003196 	.word	0x20003196
+200008c8:	20003198 	.word	0x20003198
 
 200008cc <W25Q128JV_Init>:
 200008cc:	e92d 41f0 	stmdb	sp!, {r4, r5, r6, r7, r8, lr}
@@ -1039,8 +1039,8 @@ Disassembly of section .text:
 20000a56:	2401      	movs	r4, #1
 20000a58:	e757      	b.n	2000090a <W25Q128JV_Init+0x3e>
 20000a5a:	bf00      	nop
-20000a5c:	20003946 	.word	0x20003946
-20000a60:	20003948 	.word	0x20003948
+20000a5c:	20003196 	.word	0x20003196
+20000a60:	20003198 	.word	0x20003198
 
 20000a64 <W25Q128JV_EraseBlock>:
 20000a64:	b530      	push	{r4, r5, lr}
@@ -1084,8 +1084,8 @@ Disassembly of section .text:
 20000abe:	2001      	movs	r0, #1
 20000ac0:	e7ec      	b.n	20000a9c <W25Q128JV_EraseBlock+0x38>
 20000ac2:	bf00      	nop
-20000ac4:	20003946 	.word	0x20003946
-20000ac8:	20003948 	.word	0x20003948
+20000ac4:	20003196 	.word	0x20003196
+20000ac8:	20003198 	.word	0x20003198
 
 20000acc <W25Q128JV_Write>:
 20000acc:	e92d 41f0 	stmdb	sp!, {r4, r5, r6, r7, r8, lr}
@@ -1137,8 +1137,8 @@ Disassembly of section .text:
 20000b46:	e7e2      	b.n	20000b0e <W25Q128JV_Write+0x42>
 20000b48:	2001      	movs	r0, #1
 20000b4a:	e7e2      	b.n	20000b12 <W25Q128JV_Write+0x46>
-20000b4c:	20003946 	.word	0x20003946
-20000b50:	20003948 	.word	0x20003948
+20000b4c:	20003196 	.word	0x20003196
+20000b50:	20003198 	.word	0x20003198
 
 20000b54 <W25Q128JV_ReadQuad>:
 20000b54:	b5f0      	push	{r4, r5, r6, r7, lr}
@@ -1187,8 +1187,8 @@ Disassembly of section .text:
 20000bbe:	2001      	movs	r0, #1
 20000bc0:	e7f4      	b.n	20000bac <W25Q128JV_ReadQuad+0x58>
 20000bc2:	bf00      	nop
-20000bc4:	20003946 	.word	0x20003946
-20000bc8:	20003948 	.word	0x20003948
+20000bc4:	20003196 	.word	0x20003196
+20000bc8:	20003198 	.word	0x20003198
 
 20000bcc <W25Q128JV_Read1Line>:
 20000bcc:	b5f0      	push	{r4, r5, r6, r7, lr}
@@ -1234,8 +1234,8 @@ Disassembly of section .text:
 20000c32:	2001      	movs	r0, #1
 20000c34:	e7f4      	b.n	20000c20 <W25Q128JV_Read1Line+0x54>
 20000c36:	bf00      	nop
-20000c38:	20003946 	.word	0x20003946
-20000c3c:	20003948 	.word	0x20003948
+20000c38:	20003196 	.word	0x20003196
+20000c3c:	20003198 	.word	0x20003198
 
 20000c40 <W25Q128JV_ReadFast1Line>:
 20000c40:	b5f0      	push	{r4, r5, r6, r7, lr}
@@ -1285,8 +1285,8 @@ Disassembly of section .text:
 20000cae:	e7f4      	b.n	20000c9a <W25Q128JV_ReadFast1Line+0x5a>
 20000cb0:	2001      	movs	r0, #1
 20000cb2:	e7f4      	b.n	20000c9e <W25Q128JV_ReadFast1Line+0x5e>
-20000cb4:	20003946 	.word	0x20003946
-20000cb8:	20003948 	.word	0x20003948
+20000cb4:	20003196 	.word	0x20003196
+20000cb8:	20003198 	.word	0x20003198
 
 20000cbc <W25Q128JV_ReadDual>:
 20000cbc:	b5f0      	push	{r4, r5, r6, r7, lr}
@@ -1335,8 +1335,8 @@ Disassembly of section .text:
 20000d26:	2001      	movs	r0, #1
 20000d28:	e7f4      	b.n	20000d14 <W25Q128JV_ReadDual+0x58>
 20000d2a:	bf00      	nop
-20000d2c:	20003946 	.word	0x20003946
-20000d30:	20003948 	.word	0x20003948
+20000d2c:	20003196 	.word	0x20003196
+20000d30:	20003198 	.word	0x20003198
 
 20000d34 <W25Q128JV_MemoryMapped>:
 20000d34:	b500      	push	{lr}
@@ -1367,7 +1367,7 @@ Disassembly of section .text:
 20000d78:	b011      	add	sp, #68	; 0x44
 20000d7a:	f85d fb04 	ldr.w	pc, [sp], #4
 20000d7e:	bf00      	nop
-20000d80:	20003948 	.word	0x20003948
+20000d80:	20003198 	.word	0x20003198
 20000d84:	4770      	bx	lr
 	...
 
@@ -1426,22 +1426,22 @@ Disassembly of section .text:
 20000dee:	6013      	str	r3, [r2, #0]
 20000df0:	4770      	bx	lr
 20000df2:	bf00      	nop
-20000df4:	20003994 	.word	0x20003994
-20000df8:	2000393c 	.word	0x2000393c
+20000df4:	200031e4 	.word	0x200031e4
+20000df8:	2000318c 	.word	0x2000318c
 
 20000dfc <HAL_GetTick>:
 20000dfc:	4b01      	ldr	r3, [pc, #4]	; (20000e04 <HAL_GetTick+0x8>)
 20000dfe:	6818      	ldr	r0, [r3, #0]
 20000e00:	4770      	bx	lr
 20000e02:	bf00      	nop
-20000e04:	20003994 	.word	0x20003994
+20000e04:	200031e4 	.word	0x200031e4
 
 20000e08 <HAL_GetTickPrio>:
 20000e08:	4b01      	ldr	r3, [pc, #4]	; (20000e10 <HAL_GetTickPrio+0x8>)
 20000e0a:	6818      	ldr	r0, [r3, #0]
 20000e0c:	4770      	bx	lr
 20000e0e:	bf00      	nop
-20000e10:	20003940 	.word	0x20003940
+20000e10:	20003190 	.word	0x20003190
 
 20000e14 <HAL_SetTickFreq>:
 20000e14:	b538      	push	{r3, r4, r5, lr}
@@ -1459,15 +1459,15 @@ Disassembly of section .text:
 20000e2e:	2000      	movs	r0, #0
 20000e30:	e7fc      	b.n	20000e2c <HAL_SetTickFreq+0x18>
 20000e32:	bf00      	nop
-20000e34:	2000393c 	.word	0x2000393c
-20000e38:	20003940 	.word	0x20003940
+20000e34:	2000318c 	.word	0x2000318c
+20000e38:	20003190 	.word	0x20003190
 
 20000e3c <HAL_GetTickFreq>:
 20000e3c:	4b01      	ldr	r3, [pc, #4]	; (20000e44 <HAL_GetTickFreq+0x8>)
 20000e3e:	7818      	ldrb	r0, [r3, #0]
 20000e40:	4770      	bx	lr
 20000e42:	bf00      	nop
-20000e44:	2000393c 	.word	0x2000393c
+20000e44:	2000318c 	.word	0x2000318c
 
 20000e48 <HAL_Delay>:
 20000e48:	b538      	push	{r3, r4, r5, lr}
@@ -1486,7 +1486,7 @@ Disassembly of section .text:
 20000e66:	d3fa      	bcc.n	20000e5e <HAL_Delay+0x16>
 20000e68:	bd38      	pop	{r3, r4, r5, pc}
 20000e6a:	bf00      	nop
-20000e6c:	2000393c 	.word	0x2000393c
+20000e6c:	2000318c 	.word	0x2000318c
 
 20000e70 <HAL_SuspendTick>:
 20000e70:	4a02      	ldr	r2, [pc, #8]	; (20000e7c <HAL_SuspendTick+0xc>)
@@ -1921,7 +1921,7 @@ Disassembly of section .text:
 20001232:	6d80      	ldr	r0, [r0, #88]	; 0x58
 20001234:	4770      	bx	lr
 20001236:	bf00      	nop
-20001238:	20003928 	.word	0x20003928
+20001238:	20003178 	.word	0x20003178
 
 2000123c <HAL_DMA_Init>:
 2000123c:	b570      	push	{r4, r5, r6, lr}
@@ -2502,7 +2502,7 @@ Disassembly of section .text:
 2000177e:	b003      	add	sp, #12
 20001780:	bdf0      	pop	{r4, r5, r6, r7, pc}
 20001782:	bf00      	nop
-20001784:	20003938 	.word	0x20003938
+20001784:	20003188 	.word	0x20003188
 
 20001788 <HAL_DMA_RegisterCallback>:
 20001788:	f890 3034 	ldrb.w	r3, [r0, #52]	; 0x34
@@ -3511,7 +3511,7 @@ Disassembly of section .text:
 200020de:	2502      	movs	r5, #2
 200020e0:	e7f3      	b.n	200020ca <HAL_QSPI_Command_IT+0x86>
 200020e2:	bf00      	nop
-200020e4:	20003938 	.word	0x20003938
+200020e4:	20003188 	.word	0x20003188
 
 200020e8 <HAL_QSPI_Transmit_IT>:
 200020e8:	f890 3040 	ldrb.w	r3, [r0, #64]	; 0x40
@@ -3956,7 +3956,7 @@ Disassembly of section .text:
 20002528:	f880 5040 	strb.w	r5, [r0, #64]	; 0x40
 2000252c:	2502      	movs	r5, #2
 2000252e:	e7f5      	b.n	2000251c <HAL_QSPI_AutoPolling_IT+0x98>
-20002530:	20003938 	.word	0x20003938
+20002530:	20003188 	.word	0x20003188
 
 20002534 <HAL_QSPI_MemoryMapped>:
 20002534:	b5f7      	push	{r0, r1, r2, r4, r5, r6, r7, lr}
@@ -5078,15 +5078,15 @@ Disassembly of section .text:
 20002f2e:	e7b1      	b.n	20002e94 <HAL_RCC_ClockConfig+0x58>
 20002f30:	40023c00 	.word	0x40023c00
 20002f34:	40023800 	.word	0x40023800
-20002f38:	20003910 	.word	0x20003910
-20002f3c:	20003938 	.word	0x20003938
+20002f38:	20003160 	.word	0x20003160
+20002f3c:	20003188 	.word	0x20003188
 
 20002f40 <HAL_RCC_GetHCLKFreq>:
 20002f40:	4b01      	ldr	r3, [pc, #4]	; (20002f48 <HAL_RCC_GetHCLKFreq+0x8>)
 20002f42:	6818      	ldr	r0, [r3, #0]
 20002f44:	4770      	bx	lr
 20002f46:	bf00      	nop
-20002f48:	20003938 	.word	0x20003938
+20002f48:	20003188 	.word	0x20003188
 
 20002f4c <HAL_RCC_GetPCLK1Freq>:
 20002f4c:	4b04      	ldr	r3, [pc, #16]	; (20002f60 <HAL_RCC_GetPCLK1Freq+0x14>)
@@ -5099,8 +5099,8 @@ Disassembly of section .text:
 20002f5c:	40d8      	lsrs	r0, r3
 20002f5e:	4770      	bx	lr
 20002f60:	40023800 	.word	0x40023800
-20002f64:	20003920 	.word	0x20003920
-20002f68:	20003938 	.word	0x20003938
+20002f64:	20003170 	.word	0x20003170
+20002f68:	20003188 	.word	0x20003188
 
 20002f6c <HAL_RCC_GetPCLK2Freq>:
 20002f6c:	4b04      	ldr	r3, [pc, #16]	; (20002f80 <HAL_RCC_GetPCLK2Freq+0x14>)
@@ -5113,8 +5113,8 @@ Disassembly of section .text:
 20002f7c:	40d8      	lsrs	r0, r3
 20002f7e:	4770      	bx	lr
 20002f80:	40023800 	.word	0x40023800
-20002f84:	20003920 	.word	0x20003920
-20002f88:	20003938 	.word	0x20003938
+20002f84:	20003170 	.word	0x20003170
+20002f88:	20003188 	.word	0x20003188
 
 20002f8c <HAL_RCC_GetOscConfig>:
 20002f8c:	230f      	movs	r3, #15

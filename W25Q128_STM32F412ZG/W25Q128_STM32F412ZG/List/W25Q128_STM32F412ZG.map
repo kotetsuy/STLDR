@@ -1,0 +1,203 @@
+###############################################################################
+#
+# IAR ELF Linker V8.42.1.236/W32 for ARM                  26/Jan/2020  14:56:18
+# Copyright 2007-2019 IAR Systems AB.
+#
+#    Output file  =
+#        D:\temp\STLDR\W25Q128_STM32F412ZG\W25Q128_STM32F412ZG\Exe\W25Q128_STM32F412ZG.out
+#    Map file     =
+#        D:\temp\STLDR\W25Q128_STM32F412ZG\W25Q128_STM32F412ZG\List\W25Q128_STM32F412ZG.map
+#    Command line =
+#        -f C:\Users\jah00\AppData\Local\Temp\EW41B9.tmp
+#        (D:\temp\STLDR\W25Q128_STM32F412ZG\W25Q128_STM32F412ZG\Obj\Dev_Inf.o
+#        D:\temp\STLDR\W25Q128_STM32F412ZG\W25Q128_STM32F412ZG\Obj\Loader_Src.o
+#        D:\temp\STLDR\W25Q128_STM32F412ZG\W25Q128_STM32F412ZG\Obj\stm32f4xx_hal.o
+#        D:\temp\STLDR\W25Q128_STM32F412ZG\W25Q128_STM32F412ZG\Obj\stm32f4xx_hal_cortex.o
+#        D:\temp\STLDR\W25Q128_STM32F412ZG\W25Q128_STM32F412ZG\Obj\stm32f4xx_hal_dma.o
+#        D:\temp\STLDR\W25Q128_STM32F412ZG\W25Q128_STM32F412ZG\Obj\stm32f4xx_hal_gpio.o
+#        D:\temp\STLDR\W25Q128_STM32F412ZG\W25Q128_STM32F412ZG\Obj\stm32f4xx_hal_msp.o
+#        D:\temp\STLDR\W25Q128_STM32F412ZG\W25Q128_STM32F412ZG\Obj\stm32f4xx_hal_pwr.o
+#        D:\temp\STLDR\W25Q128_STM32F412ZG\W25Q128_STM32F412ZG\Obj\stm32f4xx_hal_qspi.o
+#        D:\temp\STLDR\W25Q128_STM32F412ZG\W25Q128_STM32F412ZG\Obj\stm32f4xx_hal_rcc.o
+#        D:\temp\STLDR\W25Q128_STM32F412ZG\W25Q128_STM32F412ZG\Obj\system_stm32f4xx.o
+#        D:\temp\STLDR\W25Q128_STM32F412ZG\W25Q128_STM32F412ZG\Obj\w25q128jv.o
+#        --redirect _Printf=_PrintfSmallNoMb --redirect _Scanf=_ScanfSmallNoMb
+#        --no_out_extension -o
+#        D:\temp\STLDR\W25Q128_STM32F412ZG\W25Q128_STM32F412ZG\Exe\W25Q128_STM32F412ZG.out
+#        --map
+#        D:\temp\STLDR\W25Q128_STM32F412ZG\W25Q128_STM32F412ZG\List\W25Q128_STM32F412ZG.map
+#        --config D:\temp\STLDR\W25Q128_STM32F412ZG\Target.icf --diag_suppress
+#        Lp005,Lp006 --semihosting --entry Init --vfe --text_out locale)
+#
+###############################################################################
+
+*******************************************************************************
+*** RUNTIME MODEL ATTRIBUTES
+***
+
+__SystemLibrary = DLib
+__dlib_version  = 6
+
+
+*******************************************************************************
+*** HEAP SELECTION
+***
+
+The basic heap was selected because some modules are built with
+size limitations (and not runtime checking), and --advanced_heap
+was not specified.
+
+
+*******************************************************************************
+*** PLACEMENT SUMMARY
+***
+
+define block RAM_BLOCK with fixed order { ro code, ro data, rw };
+"P1":  place in [from 0x2000'0004 to 0x2004'0000] { block RAM_BLOCK };
+define block Info_BLOCK with fixed order { ro data object Dev_Inf.o };
+"P2":  place in [from 0x0 to 0x200] { block Info_BLOCK };
+do not initialize { section .info, rw };
+
+  Section     Kind         Address    Size  Object
+  -------     ----         -------    ----  ------
+"P2":                                 0xc8
+  Info_BLOCK                   0x0    0xc8  <Block>
+    .rodata   const            0x0    0xc8  Dev_Inf.o [1]
+                            - 0xc8    0xc8
+
+"P1", part 1 of 2:                  0x159c
+  RAM_BLOCK            0x2000'0004  0x15ed  <Block>
+    .text     ro code  0x2000'0004   0x172  Loader_Src.o [1]
+    .text     ro code  0x2000'0178    0x28  stm32f4xx_hal.o [1]
+    .text     ro code  0x2000'01a0   0x23c  w25q128jv.o [1]
+    .text     ro code  0x2000'03dc    0x14  memset.o [3]
+    .text     ro code  0x2000'03f0   0x2b8  stm32f4xx_hal_rcc.o [1]
+    .text     ro code  0x2000'06a8   0x1c4  stm32f4xx_hal_rcc.o [1]
+    .text     ro code  0x2000'086c   0x636  stm32f4xx_hal_qspi.o [1]
+    .text     ro code  0x2000'0ea4   0x144  stm32f4xx_hal_msp.o [1]
+    .text     ro code  0x2000'0fe8    0x66  ABImemset.o [3]
+    .text     ro code  0x2000'1050   0x230  I64DivMod.o [3]
+    .text     ro code  0x2000'1280     0xc  stm32f4xx_hal.o [1]
+    .text     ro code  0x2000'128c    0x9c  stm32f4xx_hal_dma.o [1]
+    .text     ro code  0x2000'1328   0x23c  stm32f4xx_hal_gpio.o [1]
+    .text     ro code  0x2000'1564     0x2  I64DivZer.o [3]
+    .text     ro code  0x2000'1568    0x22  fpinit_M.o [2]
+    .rodata   const    0x2000'158c    0x10  system_stm32f4xx.o [1]
+    .data     rw data  0x2000'159c     0x4  system_stm32f4xx.o [1]
+                     - 0x2000'15a0  0x159c
+
+"P1", part 2 of 2:                    0x51
+    .bss      uninit   0x2000'15a0    0x4c  Loader_Src.o [1]
+    .bss      uninit   0x2000'15ec     0x4  stm32f4xx_hal.o [1]
+    .bss      uninit   0x2000'15f0     0x1  w25q128jv.o [1]
+                     - 0x2000'15f1    0x51
+
+Unused ranges:
+
+         From           To      Size
+         ----           --      ----
+         0xc8        0x200     0x139
+  0x2000'15f1  0x2004'0000  0x3'ea10
+
+
+
+*******************************************************************************
+*** MODULE SUMMARY
+***
+
+    Module                ro code  ro data  rw data
+    ------                -------  -------  -------
+command line/config:
+    -----------------------------------------------
+    Total:
+
+D:\temp\STLDR\W25Q128_STM32F412ZG\W25Q128_STM32F412ZG\Obj: [1]
+    Dev_Inf.o                          200
+    Loader_Src.o              370                76
+    stm32f4xx_hal.o            52                 4
+    stm32f4xx_hal_dma.o       156
+    stm32f4xx_hal_gpio.o      572
+    stm32f4xx_hal_msp.o       324
+    stm32f4xx_hal_qspi.o    1'590
+    stm32f4xx_hal_rcc.o     1'148
+    system_stm32f4xx.o                  16        4
+    w25q128jv.o               572                 1
+    -----------------------------------------------
+    Total:                  4'784      216       85
+
+m7M_tls.a: [2]
+    fpinit_M.o                 34
+    -----------------------------------------------
+    Total:                     34
+
+rt7M_tl.a: [3]
+    ABImemset.o               102
+    I64DivMod.o               560
+    I64DivZer.o                 2
+    memset.o                   20
+    -----------------------------------------------
+    Total:                    684
+
+    Gaps                        8        2
+---------------------------------------------------
+    Grand Total:            5'510      218       85
+
+
+*******************************************************************************
+*** ENTRY LIST
+***
+
+Entry                       Address   Size  Type      Object
+-----                       -------   ----  ----      ------
+AHBPrescTable           0x2000'158c   0x10  Data  Gb  system_stm32f4xx.o [1]
+Error_Handler           0x2000'0175    0x2  Code  Gb  Loader_Src.o [1]
+HAL_DMA_Abort           0x2000'128d   0x9c  Code  Gb  stm32f4xx_hal_dma.o [1]
+HAL_GPIO_Init           0x2000'1329  0x206  Code  Gb  stm32f4xx_hal_gpio.o [1]
+HAL_GetTick             0x2000'1281    0xc  Code  Wk  stm32f4xx_hal.o [1]
+HAL_Init                0x2000'0179   0x24  Code  Gb  stm32f4xx_hal.o [1]
+HAL_MspInit             0x2000'0ea5   0x36  Code  Gb  stm32f4xx_hal_msp.o [1]
+HAL_QSPI_Abort          0x2000'0bbd   0x98  Code  Gb  stm32f4xx_hal_qspi.o [1]
+HAL_QSPI_Command        0x2000'092b   0xac  Code  Gb  stm32f4xx_hal_qspi.o [1]
+HAL_QSPI_Init           0x2000'086d   0xbe  Code  Gb  stm32f4xx_hal_qspi.o [1]
+HAL_QSPI_MspInit        0x2000'0edb   0xec  Code  Gb  stm32f4xx_hal_msp.o [1]
+HAL_QSPI_Receive        0x2000'0abd   0xf6  Code  Gb  stm32f4xx_hal_qspi.o [1]
+HAL_QSPI_SetTimeout     0x2000'0c55    0x4  Code  Gb  stm32f4xx_hal_qspi.o [1]
+HAL_QSPI_Transmit       0x2000'09d7   0xe6  Code  Gb  stm32f4xx_hal_qspi.o [1]
+HAL_RCC_ClockConfig     0x2000'06a9  0x114  Code  Gb  stm32f4xx_hal_rcc.o [1]
+HAL_RCC_OscConfig       0x2000'03f1  0x2b8  Code  Wk  stm32f4xx_hal_rcc.o [1]
+Info_BLOCK$$Base                0x0          --   Gb  - Linker created -
+Info_BLOCK$$Limit              0xc8          --   Gb  - Linker created -
+Init                    0x2000'0005   0x1a  Code  Gb  Loader_Src.o [1]
+MX_GPIO_Init            0x2000'00ff   0x60  Code  Lc  Loader_Src.o [1]
+MX_QUADSPI_Init         0x2000'00c7   0x38  Code  Lc  Loader_Src.o [1]
+QSPI_Config             0x2000'0cab  0x1f8  Code  Lc  stm32f4xx_hal_qspi.o [1]
+QSPI_WaitFlagStateUntilTimeout
+                        0x2000'0c59   0x52  Code  Lc  stm32f4xx_hal_qspi.o [1]
+RAM_BLOCK$$Base         0x2000'0004          --   Gb  - Linker created -
+RAM_BLOCK$$Limit        0x2000'15f1          --   Gb  - Linker created -
+State                   0x2000'15f0    0x1  Data  Lc  w25q128jv.o [1]
+StorageInfo                     0x0   0xc8  Data  Gb  Dev_Inf.o [1]
+SystemClock_Config      0x2000'001f   0xa8  Code  Gb  Loader_Src.o [1]
+SystemCoreClock         0x2000'159c    0x4  Data  Gb  system_stm32f4xx.o [1]
+W25Q128JV_Init          0x2000'01a1  0x232  Code  Gb  w25q128jv.o [1]
+__aeabi_ldiv0           0x2000'1565         Code  Gb  I64DivZer.o [3]
+__aeabi_memset          0x2000'0fe9         Code  Gb  ABImemset.o [3]
+__aeabi_uldivmod        0x2000'1051         Code  Gb  I64DivMod.o [3]
+__iar_Memset            0x2000'0fe9         Code  Gb  ABImemset.o [3]
+__iar_Memset_word       0x2000'0ff1         Code  Gb  ABImemset.o [3]
+__iar_init_vfp          0x2000'1569         Code  Gb  fpinit_M.o [2]
+hqspi                   0x2000'15a0   0x4c  Data  Gb  Loader_Src.o [1]
+memset                  0x2000'03dd   0x14  Code  Gb  memset.o [3]
+uwTick                  0x2000'15ec    0x4  Data  Gb  stm32f4xx_hal.o [1]
+
+
+[1] = D:\temp\STLDR\W25Q128_STM32F412ZG\W25Q128_STM32F412ZG\Obj
+[2] = m7M_tls.a
+[3] = rt7M_tl.a
+
+  5'510 bytes of readonly  code memory
+    218 bytes of readonly  data memory
+     85 bytes of readwrite data memory
+
+Errors: none
+Warnings: none

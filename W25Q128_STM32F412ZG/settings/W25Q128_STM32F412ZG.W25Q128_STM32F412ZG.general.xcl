@@ -1,0 +1,13 @@
+"D:\IAR\EWARM8.42.2\arm\bin\armproc.dll" 
+
+"D:\IAR\EWARM8.42.2\arm\bin\armsim2.dll" 
+
+"D:\temp\STLDR\W25Q128_STM32F412ZG\W25Q128_STM32F412ZG\Exe\W25Q128_STM32F412ZG.out" 
+
+--plugin="D:\IAR\EWARM8.42.2\arm\bin\armbat.dll" 
+
+--device_macro="D:\IAR\EWARM8.42.2\arm\config\debugger\ST\STM32F4xx.dmac" 
+
+
+
+

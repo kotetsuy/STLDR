@@ -58,4 +58,14 @@ Debug/
 *.launch
 RemoteSystemsTempFiles
 
-
+# for EWARM
+*.dep
+*.ewt
+*.xcl
+*.pbw
+*.ninja
+*.bat
+*.ps1
+*.crun
+*.dxn
+*.wsdt

@@ -49,16 +49,16 @@
                 <option>
                     <name>GRuntimeLibSelect</name>
                     <version>0</version>
-                    <state>1</state>
+                    <state>0</state>
                 </option>
                 <option>
                     <name>GRuntimeLibSelectSlave</name>
                     <version>0</version>
-                    <state>1</state>
+                    <state>0</state>
                 </option>
                 <option>
                     <name>RTDescription</name>
-                    <state>C/C++ランタイムライブラリの通常の設定を使用します。ロケールインタフェースなし、Cロケール、ファイル記述子サポートなし、printf/scanfでのマルチバイト文字なし、strtodでの16進数浮動小数点数なし。</state>
+                    <state>ランタイムライブラリはリンクしません。</state>
                 </option>
                 <option>
                     <name>OGProductVersion</name>
@@ -112,7 +112,7 @@
                 </option>
                 <option>
                     <name>RTConfigPath2</name>
-                    <state>$TOOLKIT_DIR$\inc\c\DLib_Config_Normal.h</state>
+                    <state></state>
                 </option>
                 <option>
                     <name>GBECoreSlave</name>
@@ -814,6 +814,11 @@
                 <option>
                     <name>IlinkExtraOptions</name>
                     <state>--diag_suppress Lp005,Lp006</state>
+                    <state>--keep Read</state>
+                    <state>--keep Write</state>
+                    <state>--keep SectorErase</state>
+                    <state>--keep MassErase</state>
+                    <state>--keep Verify</state>
                 </option>
                 <option>
                     <name>IlinkLowLevelInterfaceSlave</name>
@@ -932,7 +937,7 @@
                 </option>
                 <option>
                     <name>IlinkOptExceptionsAllow</name>
-                    <state>1</state>
+                    <state>0</state>
                 </option>
                 <option>
                     <name>IlinkOptExceptionsForce</name>
@@ -948,7 +953,7 @@
                 </option>
                 <option>
                     <name>IlinkOptUseVfe</name>
-                    <state>1</state>
+                    <state>0</state>
                 </option>
                 <option>
                     <name>IlinkOptForceVfe</name>

@@ -233,58 +233,6 @@ __weak HAL_StatusTypeDef HAL_RCC_OscConfig(RCC_OscInitTypeDef  *RCC_OscInitStruc
   /*------------------------------- HSE Configuration ------------------------*/
   if(((RCC_OscInitStruct->OscillatorType) & RCC_OSCILLATORTYPE_HSE) == RCC_OSCILLATORTYPE_HSE)
   {
-    /* Check the parameters */
-    assert_param(IS_RCC_HSE(RCC_OscInitStruct->HSEState));
-    /* When the HSE is used as system clock or clock source for PLL in these cases HSE will not disabled */
-    if((__HAL_RCC_GET_SYSCLK_SOURCE() == RCC_CFGR_SWS_HSE) ||\
-      ((__HAL_RCC_GET_SYSCLK_SOURCE() == RCC_CFGR_SWS_PLL) && ((RCC->PLLCFGR & RCC_PLLCFGR_PLLSRC) == RCC_PLLCFGR_PLLSRC_HSE)))
-    {
-      if((__HAL_RCC_GET_FLAG(RCC_FLAG_HSERDY) != RESET) && (RCC_OscInitStruct->HSEState == RCC_HSE_OFF))
-      {
-        return HAL_ERROR;
-      }
-    }
-    else
-    {
-      /* Set the new HSE configuration ---------------------------------------*/
-      __HAL_RCC_HSE_CONFIG(RCC_OscInitStruct->HSEState);
-
-      /* Check the HSE State */
-      if((RCC_OscInitStruct->HSEState) != RCC_HSE_OFF)
-      {
-#if 0
-        /* Get Start Tick */
-        tickstart = HAL_GetTick();
-#endif
-        /* Wait till HSE is ready */
-        while(__HAL_RCC_GET_FLAG(RCC_FLAG_HSERDY) == RESET)
-        {
-#if 0
-          if((HAL_GetTick() - tickstart ) > HSE_TIMEOUT_VALUE)
-          {
-            return HAL_TIMEOUT;
-          }
-#endif
-        }
-      }
-      else
-      {
-#if 0
-        /* Get Start Tick */
-        tickstart = HAL_GetTick();
-#endif
-        /* Wait till HSE is bypassed or disabled */
-        while(__HAL_RCC_GET_FLAG(RCC_FLAG_HSERDY) != RESET)
-        {
-#if 0
-          if((HAL_GetTick() - tickstart ) > HSE_TIMEOUT_VALUE)
-          {
-            return HAL_TIMEOUT;
-          }
-#endif
-        }
-      }
-    }
   }
   /*----------------------------- HSI Configuration --------------------------*/
   if(((RCC_OscInitStruct->OscillatorType) & RCC_OSCILLATORTYPE_HSI) == RCC_OSCILLATORTYPE_HSI)
@@ -358,127 +306,10 @@ __weak HAL_StatusTypeDef HAL_RCC_OscConfig(RCC_OscInitTypeDef  *RCC_OscInitStruc
   /*------------------------------ LSI Configuration -------------------------*/
   if(((RCC_OscInitStruct->OscillatorType) & RCC_OSCILLATORTYPE_LSI) == RCC_OSCILLATORTYPE_LSI)
   {
-    /* Check the parameters */
-    assert_param(IS_RCC_LSI(RCC_OscInitStruct->LSIState));
-
-    /* Check the LSI State */
-    if((RCC_OscInitStruct->LSIState)!= RCC_LSI_OFF)
-    {
-      /* Enable the Internal Low Speed oscillator (LSI). */
-      __HAL_RCC_LSI_ENABLE();
-#if 0
-      /* Get Start Tick*/
-      tickstart = HAL_GetTick();
-#endif
-      /* Wait till LSI is ready */
-      while(__HAL_RCC_GET_FLAG(RCC_FLAG_LSIRDY) == RESET)
-      {
-#if 0
-    	  if((HAL_GetTick() - tickstart ) > LSI_TIMEOUT_VALUE)
-        {
-          return HAL_TIMEOUT;
-        }
-#endif
-      }
-    }
-    else
-    {
-      /* Disable the Internal Low Speed oscillator (LSI). */
-      __HAL_RCC_LSI_DISABLE();
-#if 0
-      /* Get Start Tick */
-      tickstart = HAL_GetTick();
-#endif
-      /* Wait till LSI is ready */
-      while(__HAL_RCC_GET_FLAG(RCC_FLAG_LSIRDY) != RESET)
-      {
-#if 0
-    	  if((HAL_GetTick() - tickstart ) > LSI_TIMEOUT_VALUE)
-        {
-          return HAL_TIMEOUT;
-        }
-#endif
-      }
-    }
   }
   /*------------------------------ LSE Configuration -------------------------*/
   if(((RCC_OscInitStruct->OscillatorType) & RCC_OSCILLATORTYPE_LSE) == RCC_OSCILLATORTYPE_LSE)
   {
-    FlagStatus       pwrclkchanged = RESET;
-
-    /* Check the parameters */
-    assert_param(IS_RCC_LSE(RCC_OscInitStruct->LSEState));
-
-    /* Update LSE configuration in Backup Domain control register    */
-    /* Requires to enable write access to Backup Domain of necessary */
-    if(__HAL_RCC_PWR_IS_CLK_DISABLED())
-    {
-      __HAL_RCC_PWR_CLK_ENABLE();
-      pwrclkchanged = SET;
-    }
-
-    if(HAL_IS_BIT_CLR(PWR->CR, PWR_CR_DBP))
-    {
-      /* Enable write access to Backup domain */
-      SET_BIT(PWR->CR, PWR_CR_DBP);
-#if 0
-      /* Wait for Backup domain Write protection disable */
-      tickstart = HAL_GetTick();
-#endif
-      while(HAL_IS_BIT_CLR(PWR->CR, PWR_CR_DBP))
-      {
-#if 0
-    	  if((HAL_GetTick() - tickstart) > RCC_DBP_TIMEOUT_VALUE)
-        {
-          return HAL_TIMEOUT;
-        }
-#endif
-      }
-    }
-
-    /* Set the new LSE configuration -----------------------------------------*/
-    __HAL_RCC_LSE_CONFIG(RCC_OscInitStruct->LSEState);
-    /* Check the LSE State */
-    if((RCC_OscInitStruct->LSEState) != RCC_LSE_OFF)
-    {
-#if 0
-    	/* Get Start Tick*/
-      tickstart = HAL_GetTick();
-#endif
-      /* Wait till LSE is ready */
-      while(__HAL_RCC_GET_FLAG(RCC_FLAG_LSERDY) == RESET)
-      {
-#if 0
-    	  if((HAL_GetTick() - tickstart ) > RCC_LSE_TIMEOUT_VALUE)
-        {
-          return HAL_TIMEOUT;
-        }
-#endif
-      }
-    }
-    else
-    {
-#if 0
-    	/* Get Start Tick */
-      tickstart = HAL_GetTick();
-#endif
-      /* Wait till LSE is ready */
-      while(__HAL_RCC_GET_FLAG(RCC_FLAG_LSERDY) != RESET)
-      {
-#if 0
-    	  if((HAL_GetTick() - tickstart ) > RCC_LSE_TIMEOUT_VALUE)
-        {
-          return HAL_TIMEOUT;
-        }
-#endif
-      }
-    }
-
-    /* Restore clock configuration if changed */
-    if(pwrclkchanged == SET)
-    {
-      __HAL_RCC_PWR_CLK_DISABLE();
-    }
   }
   /*-------------------------------- PLL Configuration -----------------------*/
   /* Check the parameters */
@@ -737,7 +568,8 @@ HAL_StatusTypeDef HAL_RCC_ClockConfig(RCC_ClkInitTypeDef  *RCC_ClkInitStruct, ui
   }
 
   /* Update the SystemCoreClock global variable */
-  SystemCoreClock = HAL_RCC_GetSysClockFreq() >> AHBPrescTable[(RCC->CFGR & RCC_CFGR_HPRE)>> RCC_CFGR_HPRE_Pos];
+  //SystemCoreClock = HAL_RCC_GetSysClockFreq() >> AHBPrescTable[(RCC->CFGR & RCC_CFGR_HPRE)>> RCC_CFGR_HPRE_Pos];
+  SystemCoreClock = 100*1024*1024; // Kotetsu fixed 100MHz
 
   /* Configure the source of time base considering new system clocks settings */
 #if 0
@@ -765,6 +597,7 @@ HAL_StatusTypeDef HAL_RCC_ClockConfig(RCC_ClkInitTypeDef  *RCC_ClkInitStruct, ui
   * @{
   */
 
+#if 0
 /**
   * @brief  Selects the clock source to output on MCO1 pin(PA8) or on MCO2 pin(PC9).
   * @note   PA8/PC9 should be configured in alternate function mode.
@@ -1124,7 +957,7 @@ __weak void HAL_RCC_CSSCallback(void)
             the HAL_RCC_CSSCallback could be implemented in the user file
    */
 }
-
+#endif
 /**
   * @}
   */

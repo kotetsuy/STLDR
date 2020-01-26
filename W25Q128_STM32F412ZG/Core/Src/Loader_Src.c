@@ -69,10 +69,13 @@ int main(void)
   * @brief  The application entry point.
   * @retval int
   */
-int Init(void)
+int Init(uint8_t MemMappedMode)
 {
   /* USER CODE BEGIN 1 */
-
+  GPIO_InitTypeDef gpioInit = {0};
+  //RCC->CFGR &= ~RCC_CFGR_SWS; // Select HSI
+  //RCC->CR &= ~RCC_CR_PLLON; // PLL off
+  HAL_DeInit();
   /* USER CODE END 1 */
   
 
@@ -86,7 +89,7 @@ int Init(void)
   /* USER CODE END Init */
 
   /* Configure the system clock */
-  SystemClock_Config();
+  //SystemClock_Config();
 
   /* USER CODE BEGIN SysInit */
 
@@ -97,11 +100,14 @@ int Init(void)
   MX_QUADSPI_Init();
   /* USER CODE BEGIN 2 */
   W25Q128JV_Init();
-#if 0
+  gpioInit.Pin = GPIO_PIN_14;
+  gpioInit.Mode = GPIO_MODE_OUTPUT_PP;
+  HAL_GPIO_Init(GPIOB, &gpioInit);
+  HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_14);
+  
   if (MemMappedMode != 1) {
-	  W25Q128JV_MemoryMapped();
+    W25Q128JV_MemoryMapped();
   }
-#endif
   /* USER CODE END 2 */
  
  
@@ -111,10 +117,11 @@ int Init(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-  return 0;
+  return 1;
   /* USER CODE END 3 */
 }
 
+#if 1
 /**
   * @brief System Clock Configuration
   * @retval None
@@ -158,6 +165,7 @@ void SystemClock_Config(void)
     Error_Handler();
   }
 }
+#endif
 
 /**
   * @brief QUADSPI Initialization Function
@@ -207,6 +215,7 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
   __HAL_RCC_GPIOD_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
+  
 
 }
 
@@ -214,6 +223,12 @@ static void MX_GPIO_Init(void)
 #define QSPI_PAGESIZE 0x100
 #define QSPI_FLASHSIZE (16*1024*1024)
 #define QSPI_BLOCKSIZE 0x10000
+
+int WriteEnable (void)
+{
+  return 1;
+}
+
 /*******************************************************************************
  Description :
  Write data to the device
@@ -228,9 +243,16 @@ static void MX_GPIO_Init(void)
 ********************************************************************************/
 int Write (uint32_t Address, uint32_t Size, uint8_t* buffer)
 {
-
+  GPIO_InitTypeDef gpioInit = {0};
   uint32_t NumOfPage = 0, NumOfSingle = 0, Addr = 0, count = 0, temp = 0;
   uint32_t   QSPI_DataNum = 0;
+  if (Address >= 0x90000000) {
+    Address -= 0x90000000;
+  }
+  gpioInit.Pin = GPIO_PIN_7;
+  gpioInit.Mode = GPIO_MODE_OUTPUT_PP;
+  HAL_GPIO_Init(GPIOB, &gpioInit);
+  HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_7);
 
   Addr = Address % QSPI_PAGESIZE;
   count = QSPI_PAGESIZE - Addr;
@@ -317,6 +339,10 @@ int Write (uint32_t Address, uint32_t Size, uint8_t* buffer)
       }
     }
   }
+  gpioInit.Pin = GPIO_PIN_7;
+  gpioInit.Mode = GPIO_MODE_OUTPUT_PP;
+  HAL_GPIO_Init(GPIOB, &gpioInit);
+  HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_7);
 
 	return 1;
 }
@@ -333,7 +359,23 @@ int Write (uint32_t Address, uint32_t Size, uint8_t* buffer)
 ********************************************************************************/
 int SectorErase (uint32_t EraseStartAddress ,uint32_t EraseEndAddress)
 {
-	uint32_t BlockAddr;
+  GPIO_InitTypeDef gpioInit = {0};
+        uint32_t BlockAddr;
+        
+        
+        
+        if (EraseStartAddress >= 0x90000000) {
+          EraseStartAddress -= 0x90000000;
+        }
+        if (EraseEndAddress >= 0x90000000) {
+          EraseEndAddress -= 0x90000000;
+        }
+
+  gpioInit.Pin = GPIO_PIN_7;
+  gpioInit.Mode = GPIO_MODE_OUTPUT_PP;
+  HAL_GPIO_Init(GPIOB, &gpioInit);
+  HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_7);
+
 	EraseStartAddress = EraseStartAddress -  EraseStartAddress % 0x10000;
 
 	while (EraseEndAddress>=EraseStartAddress)
@@ -343,7 +385,12 @@ int SectorErase (uint32_t EraseStartAddress ,uint32_t EraseEndAddress)
         W25Q128JV_AutoPollingMemReady();
 		EraseStartAddress += 0x10000;
 	}
- 	return 1;
+  gpioInit.Pin = GPIO_PIN_7;
+  gpioInit.Mode = GPIO_MODE_OUTPUT_PP;
+  HAL_GPIO_Init(GPIOB, &gpioInit);
+  HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_7);
+
+	return 1;
 }
 
 /*******************************************************************************
@@ -358,7 +405,13 @@ int SectorErase (uint32_t EraseStartAddress ,uint32_t EraseEndAddress)
 ********************************************************************************/
 int MassErase (void)
 {
+  GPIO_InitTypeDef gpioInit = {0};
 	uint32_t BlockAddr = 0;
+
+  gpioInit.Pin = GPIO_PIN_7;
+  gpioInit.Mode = GPIO_MODE_OUTPUT_PP;
+  HAL_GPIO_Init(GPIOB, &gpioInit);
+  HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_7);
 
 	while (BlockAddr < QSPI_FLASHSIZE)
 	{
@@ -366,6 +419,11 @@ int MassErase (void)
         W25Q128JV_AutoPollingMemReady();
         BlockAddr += QSPI_BLOCKSIZE;
 	}
+  gpioInit.Pin = GPIO_PIN_7;
+  gpioInit.Mode = GPIO_MODE_OUTPUT_PP;
+  HAL_GPIO_Init(GPIOB, &gpioInit);
+  HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_7);
+
  	return 1;
 }
 
@@ -383,16 +441,22 @@ int MassErase (void)
 ********************************************************************************/
 int Read (uint32_t Address, uint32_t Size, uint8_t* Buffer)
 {
+  GPIO_InitTypeDef gpioInit = {0};
 	int i = 0;
 
 	W25Q128JV_MemoryMapped();
-
+        
+        
 	for (i=0; i < Size;i++)
 	{
 		*(uint8_t*)Buffer++ = *(uint8_t*)Address;
 		Address ++;
 	}
-
+  gpioInit.Pin = GPIO_PIN_0;
+  gpioInit.Mode = GPIO_MODE_OUTPUT_PP;
+  HAL_GPIO_Init(GPIOB, &gpioInit);
+  HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_0);
+        
 	return 1;
 }
 
@@ -409,6 +473,7 @@ int Read (uint32_t Address, uint32_t Size, uint8_t* Buffer)
 ********************************************************************************/
 int Verify (uint32_t MemoryAddr, uint32_t RAMBufferAddr, uint32_t Size)
 {
+  GPIO_InitTypeDef gpioInit = {0};
 	uint32_t VerifiedData = 0;
 	Size*=4;
 
@@ -421,8 +486,21 @@ int Verify (uint32_t MemoryAddr, uint32_t RAMBufferAddr, uint32_t Size)
 
 		VerifiedData++;
   }
+  gpioInit.Pin = GPIO_PIN_0;
+  gpioInit.Mode = GPIO_MODE_OUTPUT_PP;
+  HAL_GPIO_Init(GPIOB, &gpioInit);
+  HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_0);
 
-  return 0;
+  return 1;
+}
+
+void *memset(void *buf, int ch, size_t n)
+{
+  char *p = buf;
+  while (n-- > 0) {
+    *p++ = (char)ch;
+  }
+  return p;
 }
 
 /* USER CODE END 4 */

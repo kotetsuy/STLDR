@@ -122,6 +122,8 @@ HAL_StatusTypeDef W25Q128JV_AutoPollingMemReady(void)
 	return HAL_OK;
 }
 
+__IO uint32_t dummy;
+
 // Blocked function
 HAL_StatusTypeDef W25Q128JV_Init(void)
 {
@@ -170,8 +172,8 @@ HAL_StatusTypeDef W25Q128JV_Init(void)
 	}
 
 	//HAL_Delay(100);
-	for (__IO uint32_t i = 0; i < 10000; i++) {
-		__NOP();
+	for (uint32_t i = 0; i < 100000; i++) {
+		dummy = i;
 	}
 
 	/* Read Volatile Configuration register 2 --------------------------- */
@@ -614,11 +616,11 @@ HAL_StatusTypeDef W25Q128JV_MemoryMapped(void)
 	sCommand.DdrMode           = QSPI_DDR_MODE_DISABLE;
 	sCommand.DdrHoldHalfCycle  = QSPI_DDR_HHC_ANALOG_DELAY;
 	sCommand.SIOOMode          = QSPI_SIOO_INST_EVERY_CMD;
-    sCommand.Instruction = FAST_READ_DUAL_OUTPUT;
-    sCommand.DummyCycles = 8;
+    sCommand.Instruction = READ_DATA_CMD;
+    sCommand.DummyCycles = 0;
     sCommand.Address     = 0;
     sCommand.AddressMode = QSPI_ADDRESS_1_LINE;
-    sCommand.DataMode    = QSPI_DATA_2_LINES;
+    sCommand.DataMode    = QSPI_DATA_1_LINE;
     sCommand.NbData      = 16*1024*1024;
 
     sMemMappedCfg.TimeOutActivation = QSPI_TIMEOUT_COUNTER_DISABLE;

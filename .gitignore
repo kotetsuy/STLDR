@@ -70,5 +70,9 @@ RemoteSystemsTempFiles
 *.dxn
 *.wsdt
 *.pbi
-W25Q128_STM32F412ZG/Obj
-W25Q128_STM32F412ZG/settings
+*.pbd
+*.browse
+
+# for this project
+W25Q128_STM32F412ZG/Obj/
+W25Q128_STM32F412ZG/settings/

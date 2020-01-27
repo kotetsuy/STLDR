@@ -169,13 +169,12 @@ HAL_StatusTypeDef HAL_Init(void)
   __HAL_FLASH_PREFETCH_BUFFER_ENABLE();
 #endif /* PREFETCH_ENABLE */
 
-#if 0 // Kotetsu
   /* Set Interrupt Group Priority */
   HAL_NVIC_SetPriorityGrouping(NVIC_PRIORITYGROUP_4);
 
   /* Use systick as time base source and configure 1ms tick (default clock after Reset is HSI) */
   HAL_InitTick(TICK_INT_PRIORITY);
-#endif
+
   /* Init the low level hardware */
   HAL_MspInit();
 
@@ -235,7 +234,6 @@ __weak void HAL_MspDeInit(void)
    */ 
 }
 
-
 /**
   * @brief This function configures the source of the time base.
   *        The time source is configured  to have 1ms time base with a dedicated 
@@ -254,7 +252,6 @@ __weak void HAL_MspDeInit(void)
   */
 __weak HAL_StatusTypeDef HAL_InitTick(uint32_t TickPriority)
 {
-#if 0
   /* Configure the SysTick to have interrupt in 1ms time basis*/
   if (HAL_SYSTICK_Config(SystemCoreClock / (1000U / uwTickFreq)) > 0U)
   {
@@ -271,7 +268,7 @@ __weak HAL_StatusTypeDef HAL_InitTick(uint32_t TickPriority)
   {
     return HAL_ERROR;
   }
-#endif
+
   /* Return function status */
   return HAL_OK;
 }
@@ -433,10 +430,8 @@ __weak void HAL_SuspendTick(void)
   */
 __weak void HAL_ResumeTick(void)
 {
-#if 0
   /* Enable SysTick Interrupt */
   SysTick->CTRL  |= SysTick_CTRL_TICKINT_Msk;
-#endif
 }
 
 /**
@@ -601,7 +596,6 @@ void HAL_DisableMemorySwappingBank(void)
   *(__IO uint32_t *)UFB_MODE_BB = (uint32_t)DISABLE;
 }
 #endif /* STM32F427xx || STM32F437xx || STM32F429xx || STM32F439xx || STM32F469xx || STM32F479xx */
-
 /**
   * @}
   */

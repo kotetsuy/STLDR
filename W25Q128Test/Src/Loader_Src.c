@@ -343,7 +343,7 @@ int MassErase (void)
 int Read (uint32_t Address, uint32_t Size, uint8_t* Buffer)
 {
     GPIO_InitTypeDef gpioInit = {0};
-#if 0
+#if 1
     int i = 0;
 
     W25Q128JV_MemoryMapped();

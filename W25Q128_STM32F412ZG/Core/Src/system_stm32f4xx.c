@@ -133,9 +133,9 @@
                is no need to call the 2 first functions listed above, since SystemCoreClock
                variable is updated automatically.
   */
-uint32_t SystemCoreClock = 16000000;
-const uint8_t AHBPrescTable[16] = {0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 6, 7, 8, 9};
-const uint8_t APBPrescTable[8]  = {0, 0, 0, 0, 1, 2, 3, 4};
+//const uint32_t SystemCoreClock = 16000000;
+//const uint8_t AHBPrescTable[16] = {0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 6, 7, 8, 9};
+//const uint8_t APBPrescTable[8]  = {0, 0, 0, 0, 1, 2, 3, 4};
 /**
   * @}
   */
@@ -222,6 +222,7 @@ void SystemInit(void)
   */
 void SystemCoreClockUpdate(void)
 {
+#if 0
   uint32_t tmp = 0, pllvco = 0, pllp = 2, pllsource = 0, pllm = 2;
   
   /* Get SYSCLK source -------------------------------------------------------*/
@@ -230,10 +231,10 @@ void SystemCoreClockUpdate(void)
   switch (tmp)
   {
     case 0x00:  /* HSI used as system clock source */
-      SystemCoreClock = HSI_VALUE;
+      //SystemCoreClock = HSI_VALUE;
       break;
     case 0x04:  /* HSE used as system clock source */
-      SystemCoreClock = HSE_VALUE;
+      //SystemCoreClock = HSE_VALUE;
       break;
     case 0x08:  /* PLL used as system clock source */
 
@@ -255,17 +256,18 @@ void SystemCoreClockUpdate(void)
       }
 
       pllp = (((RCC->PLLCFGR & RCC_PLLCFGR_PLLP) >>16) + 1 ) *2;
-      SystemCoreClock = pllvco/pllp;
+      //SystemCoreClock = pllvco/pllp;
       break;
     default:
-      SystemCoreClock = HSI_VALUE;
+      //SystemCoreClock = HSI_VALUE;
       break;
   }
   /* Compute HCLK frequency --------------------------------------------------*/
   /* Get HCLK prescaler */
   tmp = AHBPrescTable[((RCC->CFGR & RCC_CFGR_HPRE) >> 4)];
   /* HCLK frequency */
-  SystemCoreClock >>= tmp;
+  //SystemCoreClock >>= tmp;
+#endif
 }
 
 #if defined (DATA_IN_ExtSRAM) && defined (DATA_IN_ExtSDRAM)

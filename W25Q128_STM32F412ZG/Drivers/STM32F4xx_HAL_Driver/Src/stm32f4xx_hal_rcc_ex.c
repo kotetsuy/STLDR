@@ -3144,6 +3144,7 @@ uint32_t HAL_RCC_GetSysClockFreq(void)
   */
 HAL_StatusTypeDef HAL_RCC_DeInit(void)
 {
+#if 0
   uint32_t tickstart;
 
   /* Get Start Tick */
@@ -3301,7 +3302,7 @@ HAL_StatusTypeDef HAL_RCC_DeInit(void)
   SET_BIT(RCC->CSR, RCC_CSR_RMVF);
 
   /* Update the SystemCoreClock global variable */
-  SystemCoreClock = HSI_VALUE;
+  //SystemCoreClock = HSI_VALUE;
 
   /* Adapt Systick interrupt period */
   if(HAL_InitTick(uwTickPrio) != HAL_OK)
@@ -3312,6 +3313,8 @@ HAL_StatusTypeDef HAL_RCC_DeInit(void)
   {
     return HAL_OK;
   }
+#endif
+  return HAL_OK;
 }
 
 #if defined(STM32F410Tx) || defined(STM32F410Cx) || defined(STM32F410Rx) || defined(STM32F446xx) || defined(STM32F469xx) || defined(STM32F479xx) || defined(STM32F412Zx) ||\

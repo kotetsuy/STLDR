@@ -48,10 +48,12 @@
 /** @addtogroup FLASH_RAMFUNC_Exported_Functions_Group1
   * @{
   */   
+#if 0
 __RAM_FUNC HAL_StatusTypeDef HAL_FLASHEx_StopFlashInterfaceClk(void);
 __RAM_FUNC HAL_StatusTypeDef HAL_FLASHEx_StartFlashInterfaceClk(void);
 __RAM_FUNC HAL_StatusTypeDef HAL_FLASHEx_EnableFlashSleepMode(void);
 __RAM_FUNC HAL_StatusTypeDef HAL_FLASHEx_DisableFlashSleepMode(void);
+#endif
 /**
   * @}
   */ 

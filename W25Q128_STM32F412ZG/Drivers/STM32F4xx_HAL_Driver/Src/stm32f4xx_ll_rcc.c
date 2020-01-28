@@ -1157,8 +1157,12 @@ uint32_t RCC_GetSystemClockFreq(void)
   */
 uint32_t RCC_GetHCLKClockFreq(uint32_t SYSCLK_Frequency)
 {
+#if 0
   /* HCLK clock frequency */
   return __LL_RCC_CALC_HCLK_FREQ(SYSCLK_Frequency, LL_RCC_GetAHBPrescaler());
+#else
+  return 16000000;
+#endif
 }
 
 /**
@@ -1169,7 +1173,11 @@ uint32_t RCC_GetHCLKClockFreq(uint32_t SYSCLK_Frequency)
 uint32_t RCC_GetPCLK1ClockFreq(uint32_t HCLK_Frequency)
 {
   /* PCLK1 clock frequency */
+#if 0
   return __LL_RCC_CALC_PCLK1_FREQ(HCLK_Frequency, LL_RCC_GetAPB1Prescaler());
+#else
+  return 16000000;
+#endif
 }
 
 /**
@@ -1180,7 +1188,11 @@ uint32_t RCC_GetPCLK1ClockFreq(uint32_t HCLK_Frequency)
 uint32_t RCC_GetPCLK2ClockFreq(uint32_t HCLK_Frequency)
 {
   /* PCLK2 clock frequency */
+#if 0
   return __LL_RCC_CALC_PCLK2_FREQ(HCLK_Frequency, LL_RCC_GetAPB2Prescaler());
+#else
+  return 16000000;
+#endif
 }
 
 /**

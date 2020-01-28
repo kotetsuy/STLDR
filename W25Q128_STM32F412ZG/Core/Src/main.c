@@ -23,7 +23,8 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+//#include "debug.h"
+#include "Loader_Src.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -41,7 +42,7 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
-QSPI_HandleTypeDef hqspi;
+__no_init QSPI_HandleTypeDef hqspi @0x2003E010;
 
 /* USER CODE BEGIN PV */
 
@@ -49,8 +50,9 @@ QSPI_HandleTypeDef hqspi;
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
-static void MX_GPIO_Init(void);
-static void MX_QUADSPI_Init(void);
+void MX_GPIO_Init(void);
+void MX_QUADSPI_Init(void);
+void MX_USART3_UART_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -64,9 +66,12 @@ static void MX_QUADSPI_Init(void);
   * @brief  The application entry point.
   * @retval int
   */
+#if 0
 int main(void)
 {
   /* USER CODE BEGIN 1 */
+    uint8_t Buf[16];
+    uint8_t Str[256];
 
   /* USER CODE END 1 */
   
@@ -74,20 +79,81 @@ int main(void)
   /* MCU Configuration--------------------------------------------------------*/
 
   /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
-  HAL_Init();
+  //HAL_Init();
 
   /* USER CODE BEGIN Init */
 
   /* USER CODE END Init */
+
+  /* Configure the system clock */
+  //SystemClock_Config();
 
   /* USER CODE BEGIN SysInit */
 
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
-  MX_GPIO_Init();
-  MX_QUADSPI_Init();
+  //MX_GPIO_Init();
+  //MX_QUADSPI_Init();
+  //MX_USART3_UART_Init();
   /* USER CODE BEGIN 2 */
+    // Read Test
+    Init(0);
+    Read(0x90000000, 16, Buf);
+    Debug_Init();
+    Debug_Print("Read\n");
+    Debug_sprintf(Str, " 0:", Buf[0]);
+    Debug_Print(Str);
+    Debug_sprintf(Str, " 1:", Buf[1]);
+    Debug_Print(Str);
+    Debug_sprintf(Str, " 2:", Buf[2]);
+    Debug_Print(Str);
+    Debug_Print("\n");
+    // Sector Erase Test
+    Init(0);
+    SectorErase(0x90000000, 0x90010000);
+    Read(0x90000000, 16, Buf);
+    Debug_Init();
+    Debug_Print("SectorErase\n");
+    Debug_sprintf(Str, " 0:", Buf[0]);
+    Debug_Print(Str);
+    Debug_sprintf(Str, " 1:", Buf[1]);
+    Debug_Print(Str);
+    Debug_sprintf(Str, " 2:", Buf[2]);
+    Debug_Print(Str);
+    Debug_Print("\n");
+#if 1
+    // Mass Erase Test
+    Init(0);
+    MassErase();
+    Read(0x90000000, 16, Buf);
+    Debug_Init();
+    Debug_Print("MassErase\n");
+    Debug_sprintf(Str, " 0:", Buf[0]);
+    Debug_Print(Str);
+    Debug_sprintf(Str, " 1:", Buf[1]);
+    Debug_Print(Str);
+    Debug_sprintf(Str, " 2:", Buf[2]);
+    Debug_Print(Str);
+    Debug_Print("\n");
+#endif
+    // Write Test
+    Init(0);
+    for (int32_t i = 0; i < 16; i++) {
+        Buf[i] = i;
+    }
+    Write(0x90000000, 16, Buf);
+    Read(0x90000000, 16, Buf);
+    Debug_Init();
+    Debug_Print("Write\n");
+    Debug_sprintf(Str, " 0:", Buf[0]);
+    Debug_Print(Str);
+    Debug_sprintf(Str, " 1:", Buf[1]);
+    Debug_Print(Str);
+    Debug_sprintf(Str, " 2:", Buf[2]);
+    Debug_Print(Str);
+    Debug_Print("\n");
+    
 
   /* USER CODE END 2 */
  
@@ -103,7 +169,7 @@ int main(void)
   }
   /* USER CODE END 3 */
 }
-
+#endif
 /**
   * @brief System Clock Configuration
   * @retval None
@@ -126,7 +192,7 @@ void SystemClock_Config(void)
     
   }
   LL_RCC_SetAHBPrescaler(LL_RCC_SYSCLK_DIV_1);
-  LL_RCC_SetAPB1Prescaler(LL_RCC_APB1_DIV_2);
+  LL_RCC_SetAPB1Prescaler(LL_RCC_APB1_DIV_1);
   LL_RCC_SetAPB2Prescaler(LL_RCC_APB2_DIV_1);
   LL_RCC_SetSysClkSource(LL_RCC_SYS_CLKSOURCE_HSI);
 
@@ -150,7 +216,7 @@ void SystemClock_Config(void)
   * @param None
   * @retval None
   */
-static void MX_QUADSPI_Init(void)
+void MX_QUADSPI_Init(void)
 {
 
   /* USER CODE BEGIN QUADSPI_Init 0 */
@@ -166,7 +232,7 @@ static void MX_QUADSPI_Init(void)
   hqspi.Init.FifoThreshold = 4;
   hqspi.Init.SampleShifting = QSPI_SAMPLE_SHIFTING_HALFCYCLE;
   hqspi.Init.FlashSize = 23;
-  hqspi.Init.ChipSelectHighTime = QSPI_CS_HIGH_TIME_6_CYCLE;
+  hqspi.Init.ChipSelectHighTime = QSPI_CS_HIGH_TIME_8_CYCLE;
   hqspi.Init.ClockMode = QSPI_CLOCK_MODE_0;
   hqspi.Init.FlashID = QSPI_FLASH_ID_1;
   hqspi.Init.DualFlash = QSPI_DUALFLASH_DISABLE;
@@ -181,11 +247,64 @@ static void MX_QUADSPI_Init(void)
 }
 
 /**
+  * @brief USART3 Initialization Function
+  * @param None
+  * @retval None
+  */
+void MX_USART3_UART_Init(void)
+{
+
+  /* USER CODE BEGIN USART3_Init 0 */
+
+  /* USER CODE END USART3_Init 0 */
+
+  //LL_USART_InitTypeDef USART_InitStruct = {0};
+
+  LL_GPIO_InitTypeDef GPIO_InitStruct = {0};
+
+  /* Peripheral clock enable */
+  LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_USART3);
+  
+  LL_AHB1_GRP1_EnableClock(LL_AHB1_GRP1_PERIPH_GPIOD);
+  /**USART3 GPIO Configuration  
+  PD8   ------> USART3_TX
+  PD9   ------> USART3_RX 
+  */
+  GPIO_InitStruct.Pin = LL_GPIO_PIN_8|LL_GPIO_PIN_9;
+  GPIO_InitStruct.Mode = LL_GPIO_MODE_ALTERNATE;
+  GPIO_InitStruct.Speed = LL_GPIO_SPEED_FREQ_VERY_HIGH;
+  GPIO_InitStruct.OutputType = LL_GPIO_OUTPUT_PUSHPULL;
+  GPIO_InitStruct.Pull = LL_GPIO_PULL_NO;
+  GPIO_InitStruct.Alternate = LL_GPIO_AF_7;
+  LL_GPIO_Init(GPIOD, &GPIO_InitStruct);
+
+  /* USER CODE BEGIN USART3_Init 1 */
+
+  /* USER CODE END USART3_Init 1 */
+#if 0
+  USART_InitStruct.BaudRate = 115200;
+  USART_InitStruct.DataWidth = LL_USART_DATAWIDTH_8B;
+  USART_InitStruct.StopBits = LL_USART_STOPBITS_1;
+  USART_InitStruct.Parity = LL_USART_PARITY_NONE;
+  USART_InitStruct.TransferDirection = LL_USART_DIRECTION_TX_RX;
+  USART_InitStruct.HardwareFlowControl = LL_USART_HWCONTROL_NONE;
+  USART_InitStruct.OverSampling = LL_USART_OVERSAMPLING_16;
+  LL_USART_Init(USART3, &USART_InitStruct);
+  LL_USART_ConfigAsyncMode(USART3);
+  LL_USART_Enable(USART3);
+#endif
+  /* USER CODE BEGIN USART3_Init 2 */
+
+  /* USER CODE END USART3_Init 2 */
+
+}
+
+/**
   * @brief GPIO Initialization Function
   * @param None
   * @retval None
   */
-static void MX_GPIO_Init(void)
+void MX_GPIO_Init(void)
 {
 
   /* GPIO Ports Clock Enable */
@@ -208,6 +327,8 @@ void Error_Handler(void)
 {
   /* USER CODE BEGIN Error_Handler_Debug */
   /* User can add his own implementation to report the HAL error return state */
+    while (1)
+        ;
 
   /* USER CODE END Error_Handler_Debug */
 }

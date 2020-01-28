@@ -325,7 +325,7 @@ void LL_mDelay(uint32_t Delay)
 void LL_SetSystemCoreClock(uint32_t HCLKFrequency)
 {
   /* HCLK clock frequency */
-  SystemCoreClock = HCLKFrequency;
+  //SystemCoreClock = HCLKFrequency;
 }
 
 /**
@@ -671,7 +671,7 @@ static ErrorStatus UTILS_EnablePLLAndSwitchSystem(uint32_t SYSCLK_Frequency, LL_
 {
   ErrorStatus status = SUCCESS;
   uint32_t hclk_frequency = 0U;
-
+#if 0
   assert_param(IS_LL_UTILS_SYSCLK_DIV(UTILS_ClkInitStruct->AHBCLKDivider));
   assert_param(IS_LL_UTILS_APB1_DIV(UTILS_ClkInitStruct->APB1CLKDivider));
   assert_param(IS_LL_UTILS_APB2_DIV(UTILS_ClkInitStruct->APB2CLKDivider));
@@ -721,7 +721,7 @@ static ErrorStatus UTILS_EnablePLLAndSwitchSystem(uint32_t SYSCLK_Frequency, LL_
   {
     LL_SetSystemCoreClock(hclk_frequency);
   }
-
+#endif
   return status;
 }
 

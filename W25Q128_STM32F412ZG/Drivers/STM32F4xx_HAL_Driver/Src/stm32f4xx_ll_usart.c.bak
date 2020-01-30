@@ -373,10 +373,8 @@ ErrorStatus LL_USART_Init(USART_TypeDef *USARTx, LL_USART_InitTypeDef *USART_Ini
                            periphclk,
                            USART_InitStruct->OverSampling,
                            USART_InitStruct->BaudRate);
-#elif 0
-      USARTx->BRR = 0x8a; // Fck = 16MHz, OVER8=0, Baudrate=115200 
 #else
-      USARTx->BRR = 0x1b2; // Fck = 50MHz, OVER8=0, Baudrate=115200 
+      USARTx->BRR = 0x8a; // Fck = 16MHz, OVER8=0, Baudrate=115200 
 #endif
       /* Check BRR is greater than or equal to 16d */
       assert_param(IS_LL_USART_BRR_MIN(USARTx->BRR));

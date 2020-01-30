@@ -778,7 +778,7 @@
                 </option>
                 <option>
                     <name>IlinkIcfFile</name>
-                    <state>$PROJ_DIR$/Target.icf</state>
+                    <state>$PROJ_DIR$\Target.icf</state>
                 </option>
                 <option>
                     <name>IlinkIcfFileSlave</name>
@@ -834,11 +834,11 @@
                 </option>
                 <option>
                     <name>IlinkProgramEntryLabelSelect</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>IlinkProgramEntryLabel</name>
-                    <state>Init</state>
+                    <state>__iar_program_start</state>
                 </option>
                 <option>
                     <name>DoFill</name>

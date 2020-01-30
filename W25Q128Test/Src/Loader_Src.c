@@ -51,6 +51,7 @@ extern QSPI_HandleTypeDef hqspi;
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN PFP */
 extern void SystemClock_Config(void);
+extern void ResetClock_Config(void);
 extern void MX_QUADSPI_Init(void);
 extern void MX_USART3_UART_Init(void);
 extern void MX_GPIO_Init(void);
@@ -89,8 +90,9 @@ int Init(uint8_t MemMappedMode)
     memset(&hqspi, 0, sizeof(QSPI_HandleTypeDef));
     HAL_QSPI_DeInit(&hqspi);
     HAL_DeInit();
+    ResetClock_Config();
+    
     HAL_Init();
-
 
     /* Configure the system clock */
     SystemClock_Config();

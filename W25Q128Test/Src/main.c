@@ -59,6 +59,8 @@ void MX_USART3_UART_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+extern uint8_t array[];
+#define ARRAY_SIZE 130245
 
 /* USER CODE END 0 */
 
@@ -96,6 +98,7 @@ int main(void)
   //MX_QUADSPI_Init();
   //MX_USART3_UART_Init();
   /* USER CODE BEGIN 2 */
+#if 0
     // Read Test
     Init(0);
     Read(0x9001e800, 16, Buf);
@@ -121,7 +124,7 @@ int main(void)
     Debug_sprintf(Str, " 2:", Buf[2]);
     Debug_Print(Str);
     Debug_Print("\n");
-#if 0
+#endif
     // Mass Erase Test
     Init(0);
     MassErase();
@@ -135,16 +138,21 @@ int main(void)
     Debug_sprintf(Str, " 2:", Buf[2]);
     Debug_Print(Str);
     Debug_Print("\n");
-#endif
     // Write Test
     Init(0);
-    for (int32_t i = 0; i < 16; i++) {
-        Buf[i] = i;
-    }
-    Write(0x9001e800, 16, Buf);
-    Read(0x9001e800, 16, Buf);
+    Write(0x90000000, ARRAY_SIZE, array);
+    Read(0x90000000, 16, Buf);
     Debug_Init();
     Debug_Print("Write\n");
+    Debug_sprintf(Str, " 0:", Buf[0]);
+    Debug_Print(Str);
+    Debug_sprintf(Str, " 1:", Buf[1]);
+    Debug_Print(Str);
+    Debug_sprintf(Str, " 2:", Buf[2]);
+    Debug_Print(Str);
+    Debug_Print("\n");
+    Read(0x9001e800, 16, Buf);
+    Debug_Print("1e800\n");
     Debug_sprintf(Str, " 0:", Buf[0]);
     Debug_Print(Str);
     Debug_sprintf(Str, " 1:", Buf[1]);
@@ -173,6 +181,7 @@ int main(void)
   * @brief System Clock Configuration
   * @retval None
   */
+#if 0
 void SystemClock_Config(void)
 {
   LL_FLASH_SetLatency(LL_FLASH_LATENCY_0);
@@ -202,12 +211,74 @@ void SystemClock_Config(void)
   }
   LL_SetSystemCoreClock(16000000);
 
+#if 0
    /* Update the time base */
   if (HAL_InitTick (TICK_INT_PRIORITY) != HAL_OK)
   {
     Error_Handler();  
   };
   LL_RCC_SetTIMPrescaler(LL_RCC_TIM_PRESCALER_TWICE);
+#endif
+}
+#else
+void SystemClock_Config(void)
+{
+  LL_FLASH_SetLatency(LL_FLASH_LATENCY_3);
+
+  if(LL_FLASH_GetLatency() != LL_FLASH_LATENCY_3)
+  {
+  Error_Handler();  
+  }
+  LL_PWR_SetRegulVoltageScaling(LL_PWR_REGU_VOLTAGE_SCALE1);
+  LL_RCC_HSI_SetCalibTrimming(16);
+  LL_RCC_HSI_Enable();
+
+   /* Wait till HSI is ready */
+  while(LL_RCC_HSI_IsReady() != 1)
+  {
+    
+  }
+  LL_RCC_PLL_ConfigDomain_SYS(LL_RCC_PLLSOURCE_HSI, LL_RCC_PLLM_DIV_8, 100, LL_RCC_PLLP_DIV_2);
+  LL_RCC_PLL_Enable();
+
+   /* Wait till PLL is ready */
+  while(LL_RCC_PLL_IsReady() != 1)
+  {
+    
+  }
+  LL_RCC_SetAHBPrescaler(LL_RCC_SYSCLK_DIV_1);
+  LL_RCC_SetAPB1Prescaler(LL_RCC_APB1_DIV_2);
+  LL_RCC_SetAPB2Prescaler(LL_RCC_APB2_DIV_1);
+  LL_RCC_SetSysClkSource(LL_RCC_SYS_CLKSOURCE_PLL);
+
+   /* Wait till System clock is ready */
+  while(LL_RCC_GetSysClkSource() != LL_RCC_SYS_CLKSOURCE_STATUS_PLL)
+  {
+  
+  }
+  //LL_Init1msTick(100000000);
+  //LL_SYSTICK_SetClkSource(LL_SYSTICK_CLKSOURCE_HCLK);
+  //LL_SetSystemCoreClock(100000000);
+  //LL_RCC_SetTIMPrescaler(LL_RCC_TIM_PRESCALER_TWICE);
+}
+
+#endif
+
+void ResetClock_Config(void)
+{
+  LL_RCC_SetSysClkSource(LL_RCC_SYS_CLKSOURCE_HSI);
+   /* Wait till System clock is ready */
+  while(LL_RCC_GetSysClkSource() != LL_RCC_SYS_CLKSOURCE_STATUS_HSI)
+  {
+  
+  }
+  LL_RCC_PLL_Disable();
+   /* Wait till PLL is NOT ready */
+  while(LL_RCC_PLL_IsReady() == 1)
+  {
+    
+  }
+  
 }
 
 /**

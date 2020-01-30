@@ -110,7 +110,7 @@ HAL_StatusTypeDef W25Q128JV_AutoPollingMemReady(void)
     return HAL_OK;
 }
 
-__IO uint32_t dummy;
+extern __IO uint32_t dummy;
 
 // Blocked function
 HAL_StatusTypeDef W25Q128JV_Init(void)

@@ -35,6 +35,6 @@ SOFTWARE.
 void Debug_Init(void);
 void Debug_Print(uint8_t *s);
 void Debug_sprintf(uint8_t *d, uint8_t *s, int16_t v);
-
+void Debug_DeInit(void);
 
 #endif /* INC_DEBUG_H_ */

@@ -93,7 +93,19 @@ void Debug_sprintf(uint8_t *d, uint8_t *s, int16_t v)
     *d++ = '\0';
 }
 #else
-void Debug_sprintf(uint8_t *d, uint8_t *s, int32_t v)
+void Debug_sprintf(uint8_t *d, uint8_t *s, int16_t v)
+{
+}
+#endif
+
+#ifdef KYDEBUG
+void Debug_DeInit(void)
+{
+    LL_USART_Disable(USART3);
+    LL_APB1_GRP1_DisableClock(LL_APB1_GRP1_PERIPH_USART3);    
+}
+#else
+void Debug_DeInit(void)
 {
 }
 #endif

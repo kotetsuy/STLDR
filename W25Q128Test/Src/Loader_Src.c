@@ -24,6 +24,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "w25q128jv_ll.h"
+#include "debug.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -63,7 +64,11 @@ void *memset(void *buf, int ch, size_t n);
 /* USER CODE BEGIN 0 */
 /* USER CODE END 0 */
 
-__IO static uint8_t dummy;
+#if 0
+__no_init __IO uint32_t dummy @0x2003E000;
+#else
+__IO uint32_t dummy;
+#endif
 
 /**
   * @brief  The application entry point.
@@ -71,9 +76,9 @@ __IO static uint8_t dummy;
   */
 int Init(uint8_t MemMappedMode)
 {
-    /* USER CODE BEGIN 1 */
+#ifdef KYDEBUG
     LL_GPIO_InitTypeDef gpioInit = {0};
-
+#endif
     hqspi.Instance = QUADSPI;
     __HAL_QSPI_DISABLE(&hqspi);
     __HAL_RCC_QSPI_FORCE_RESET();
@@ -84,42 +89,25 @@ int Init(uint8_t MemMappedMode)
     memset(&hqspi, 0, sizeof(QSPI_HandleTypeDef));
     HAL_QSPI_DeInit(&hqspi);
     HAL_DeInit();
-    /* USER CODE END 1 */  
-
-    /* MCU Configuration--------------------------------------------------------*/
-
-    /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
     HAL_Init();
 
-    /* USER CODE BEGIN Init */
-
-    /* USER CODE END Init */
 
     /* Configure the system clock */
     SystemClock_Config();
 
-    /* USER CODE BEGIN SysInit */
-
-    /* USER CODE END SysInit */
 
     /* Initialize all configured peripherals */
     MX_GPIO_Init();
     MX_QUADSPI_Init();
-    /* USER CODE BEGIN 2 */
     W25Q128JV_Init();
+#ifdef KYDEBUG
     gpioInit.Pin = LL_GPIO_PIN_14;
     gpioInit.Mode = LL_GPIO_MODE_OUTPUT;
     LL_GPIO_Init(GPIOB, &gpioInit);
-    HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_14);
-    /* USER CODE END 2 */
-
-    /* Infinite loop */
-    /* USER CODE BEGIN WHILE */
-    /* USER CODE END WHILE */
-
-    /* USER CODE BEGIN 3 */
+    LL_GPIO_TogglePin(GPIOB, LL_GPIO_PIN_14);
+#endif
     return 1;
-    /* USER CODE END 3 */
+
 }
 
 /* USER CODE BEGIN 4 */
@@ -146,29 +134,47 @@ int WriteEnable (void)
 ********************************************************************************/
 int Write (uint32_t Address, uint32_t Size, uint8_t* buffer)
 {
-    GPIO_InitTypeDef gpioInit = {0};
+#ifdef KYDEBUG
+    LL_GPIO_InitTypeDef gpioInit = {0};
+#endif
+    uint8_t str[16];
     uint32_t NumOfPage = 0, NumOfSingle = 0, Addr = 0, count = 0, temp = 0;
     uint32_t   QSPI_DataNum = 0;
+
     if (Address >= 0x90000000) {
         Address -= 0x90000000;
     }
-    gpioInit.Pin = GPIO_PIN_7;
-    gpioInit.Mode = GPIO_MODE_OUTPUT_PP;
-    HAL_GPIO_Init(GPIOB, &gpioInit);
-    HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_7);
+    Debug_DeInit();
+    Debug_Init();
 
     Addr = Address % QSPI_PAGESIZE;
     count = QSPI_PAGESIZE - Addr;
     NumOfPage =  Size / QSPI_PAGESIZE;
     NumOfSingle = Size % QSPI_PAGESIZE;
 
+    Debug_sprintf(str, "Addr = ", Addr);
+    Debug_Print(str);
+    Debug_Print("\n");
+    Debug_sprintf(str, "count = ", count);
+    Debug_Print(str);
+    Debug_Print("\n");
+    Debug_sprintf(str, "NumOfPage = ", NumOfPage);
+    Debug_Print(str);
+    Debug_Print("\n");
+    Debug_sprintf(str, "NumOfSingle = ", NumOfSingle);
+    Debug_Print(str);
+    Debug_Print("\n");
+    
+    
     if (Addr == 0) /*!< Address is QSPI_PAGESIZE aligned  */
     {
         if (NumOfPage == 0) /*!< NumByteToWrite < QSPI_PAGESIZE */
         {
             QSPI_DataNum = Size;
-            W25Q128JV_Write(Address, buffer, QSPI_DataNum);
-            W25Q128JV_AutoPollingMemReady();
+            if (QSPI_DataNum != 0) {
+                W25Q128JV_Write(Address, buffer, QSPI_DataNum);
+                W25Q128JV_AutoPollingMemReady();
+            }
         }
         else /*!< Size > QSPI_PAGESIZE */
         {
@@ -179,11 +185,21 @@ int Write (uint32_t Address, uint32_t Size, uint8_t* buffer)
                 W25Q128JV_AutoPollingMemReady();
                 Address +=  QSPI_PAGESIZE;
                 buffer += QSPI_PAGESIZE;
+                Debug_sprintf(str, "NumOfPage = ", NumOfPage);
+                Debug_Print(str);
+                Debug_Print("\n");
+
             }
 
             QSPI_DataNum = NumOfSingle;
-            W25Q128JV_Write(Address, buffer, QSPI_DataNum);
-            W25Q128JV_AutoPollingMemReady();
+            if (QSPI_DataNum != 0) {
+                W25Q128JV_Write(Address, buffer, QSPI_DataNum);
+                W25Q128JV_AutoPollingMemReady();
+            }
+            Debug_sprintf(str, "NumOfSingle = ", NumOfSingle);
+            Debug_Print(str);
+            Debug_Print("\n");
+
         }
     }
     else /*!< Address is not QSPI_PAGESIZE aligned  */
@@ -194,20 +210,26 @@ int Write (uint32_t Address, uint32_t Size, uint8_t* buffer)
             {
                 temp = NumOfSingle - count;
                 QSPI_DataNum = count;
-                W25Q128JV_Write(Address, buffer, QSPI_DataNum);
-                W25Q128JV_AutoPollingMemReady();
+                if (QSPI_DataNum != 0) {
+                    W25Q128JV_Write(Address, buffer, QSPI_DataNum);
+                    W25Q128JV_AutoPollingMemReady();
+                }
                 Address +=  count;
                 buffer += count;
 
                 QSPI_DataNum = temp;
-                W25Q128JV_Write(Address, buffer, QSPI_DataNum);
-                W25Q128JV_AutoPollingMemReady();
+                if (QSPI_DataNum != 0) {
+                    W25Q128JV_Write(Address, buffer, QSPI_DataNum);
+                    W25Q128JV_AutoPollingMemReady();
+                }
             }
             else
             {
                 QSPI_DataNum = Size;
-                W25Q128JV_Write(Address, buffer, QSPI_DataNum);
-                W25Q128JV_AutoPollingMemReady();
+                if (QSPI_DataNum != 0) {
+                    W25Q128JV_Write(Address, buffer, QSPI_DataNum);
+                    W25Q128JV_AutoPollingMemReady();
+                }
             }
         }
         else /*!< Size > QSPI_PAGESIZE */
@@ -218,8 +240,10 @@ int Write (uint32_t Address, uint32_t Size, uint8_t* buffer)
 
             QSPI_DataNum = count;
 
-            W25Q128JV_Write(Address, buffer, QSPI_DataNum);
-            W25Q128JV_AutoPollingMemReady();
+            if (QSPI_DataNum != 0) {
+                W25Q128JV_Write(Address, buffer, QSPI_DataNum);
+                W25Q128JV_AutoPollingMemReady();
+            }
             Address +=  count;
             buffer += count;
 
@@ -227,8 +251,10 @@ int Write (uint32_t Address, uint32_t Size, uint8_t* buffer)
             {
                 QSPI_DataNum = QSPI_PAGESIZE;
 
-                W25Q128JV_Write(Address, buffer, QSPI_DataNum);
-                W25Q128JV_AutoPollingMemReady();
+                if (QSPI_DataNum != 0) {
+                    W25Q128JV_Write(Address, buffer, QSPI_DataNum);
+                    W25Q128JV_AutoPollingMemReady();
+                }
                 Address +=  QSPI_PAGESIZE;
                 buffer += QSPI_PAGESIZE;
             }
@@ -237,16 +263,19 @@ int Write (uint32_t Address, uint32_t Size, uint8_t* buffer)
             {
                 QSPI_DataNum = NumOfSingle;
 
-                W25Q128JV_Write(Address, buffer, QSPI_DataNum);
-                W25Q128JV_AutoPollingMemReady();
+                if (QSPI_DataNum != 0) {
+                    W25Q128JV_Write(Address, buffer, QSPI_DataNum);
+                    W25Q128JV_AutoPollingMemReady();
+                }
             }
         }
     }
+#ifdef KYDEBUG
     gpioInit.Pin = GPIO_PIN_7;
     gpioInit.Mode = GPIO_MODE_OUTPUT_PP;
-    HAL_GPIO_Init(GPIOB, &gpioInit);
-    HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_7);
-
+    LL_GPIO_Init(GPIOB, &gpioInit);
+    LL_GPIO_TogglePin(GPIOB, LL_GPIO_PIN_7);
+#endif
     return 1;
 }
 
@@ -262,7 +291,9 @@ int Write (uint32_t Address, uint32_t Size, uint8_t* buffer)
 ********************************************************************************/
 int SectorErase (uint32_t EraseStartAddress ,uint32_t EraseEndAddress)
 {
-    GPIO_InitTypeDef gpioInit = {0};
+#ifdef KYDEBUG
+    LL_GPIO_InitTypeDef gpioInit = {0};
+#endif
     uint32_t BlockAddr;
         
     if (EraseStartAddress >= 0x90000000) {
@@ -272,11 +303,12 @@ int SectorErase (uint32_t EraseStartAddress ,uint32_t EraseEndAddress)
         EraseEndAddress -= 0x90000000;
     }
 
+#ifdef KYDEBUG
     gpioInit.Pin = GPIO_PIN_7;
     gpioInit.Mode = GPIO_MODE_OUTPUT_PP;
-    HAL_GPIO_Init(GPIOB, &gpioInit);
-    HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_7);
-
+    LL_GPIO_Init(GPIOB, &gpioInit);
+    LL_GPIO_TogglePin(GPIOB, GPIO_PIN_7);
+#endif
     EraseStartAddress = EraseStartAddress -  EraseStartAddress % 0x10000;
 
     while (EraseEndAddress>=EraseStartAddress)
@@ -286,11 +318,12 @@ int SectorErase (uint32_t EraseStartAddress ,uint32_t EraseEndAddress)
         W25Q128JV_AutoPollingMemReady();
         EraseStartAddress += 0x10000;
     }
+#ifdef KYDEBUG
     gpioInit.Pin = GPIO_PIN_7;
     gpioInit.Mode = GPIO_MODE_OUTPUT_PP;
-    HAL_GPIO_Init(GPIOB, &gpioInit);
-    HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_7);
-
+    LL_GPIO_Init(GPIOB, &gpioInit);
+    LL_GPIO_TogglePin(GPIOB, GPIO_PIN_7);
+#endif
     return 1;
 }
 
@@ -306,13 +339,17 @@ int SectorErase (uint32_t EraseStartAddress ,uint32_t EraseEndAddress)
 ********************************************************************************/
 int MassErase (void)
 {
-    GPIO_InitTypeDef gpioInit = {0};
+#ifdef KYDEBUG
+    LL_GPIO_InitTypeDef gpioInit = {0};
+#endif
     uint32_t BlockAddr = 0;
 
+#ifdef KYDEBUG
     gpioInit.Pin = GPIO_PIN_7;
     gpioInit.Mode = GPIO_MODE_OUTPUT_PP;
-    HAL_GPIO_Init(GPIOB, &gpioInit);
-    HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_7);
+    LL_GPIO_Init(GPIOB, &gpioInit);
+    LL_GPIO_TogglePin(GPIOB, GPIO_PIN_7);
+#endif
 
     while (BlockAddr < QSPI_FLASHSIZE)
     {
@@ -320,10 +357,12 @@ int MassErase (void)
         W25Q128JV_AutoPollingMemReady();
         BlockAddr += QSPI_BLOCKSIZE;
     }
+#ifdef KYDEBUG
     gpioInit.Pin = GPIO_PIN_7;
     gpioInit.Mode = GPIO_MODE_OUTPUT_PP;
-    HAL_GPIO_Init(GPIOB, &gpioInit);
-    HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_7);
+    LL_GPIO_Init(GPIOB, &gpioInit);
+    LL_GPIO_TogglePin(GPIOB, GPIO_PIN_7);
+#endif
 
     return 1;
 }
@@ -342,7 +381,9 @@ int MassErase (void)
 ********************************************************************************/
 int Read (uint32_t Address, uint32_t Size, uint8_t* Buffer)
 {
-    GPIO_InitTypeDef gpioInit = {0};
+#ifdef KYDEBUG
+    LL_GPIO_InitTypeDef gpioInit = {0};
+#endif
 #if 1
     int i = 0;
 
@@ -372,11 +413,12 @@ int Read (uint32_t Address, uint32_t Size, uint8_t* Buffer)
         Address += l;
     }
 #endif
+#ifdef KYDEBUG
     gpioInit.Pin = GPIO_PIN_0;
     gpioInit.Mode = GPIO_MODE_OUTPUT_PP;
-    HAL_GPIO_Init(GPIOB, &gpioInit);
-    HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_0);
-
+    LL_GPIO_Init(GPIOB, &gpioInit);
+    LL_GPIO_TogglePin(GPIOB, GPIO_PIN_0);
+#endif
     return 1;
 }
 
@@ -393,7 +435,9 @@ int Read (uint32_t Address, uint32_t Size, uint8_t* Buffer)
 ********************************************************************************/
 int Verify (uint32_t MemoryAddr, uint32_t RAMBufferAddr, uint32_t Size)
 {
-    GPIO_InitTypeDef gpioInit = {0};
+#ifdef KYDEBUG
+    LL_GPIO_InitTypeDef gpioInit = {0};
+#endif
     uint32_t VerifiedData = 0;
     Size*=4;
 
@@ -406,11 +450,12 @@ int Verify (uint32_t MemoryAddr, uint32_t RAMBufferAddr, uint32_t Size)
 
         VerifiedData++;
     }
+#ifdef KYDEBUG
     gpioInit.Pin = GPIO_PIN_0;
     gpioInit.Mode = GPIO_MODE_OUTPUT_PP;
-    HAL_GPIO_Init(GPIOB, &gpioInit);
-    HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_0);
-
+    LL_GPIO_Init(GPIOB, &gpioInit);
+    LL_GPIO_TogglePin(GPIOB, GPIO_PIN_0);
+#endif
     return 1;
 }
 

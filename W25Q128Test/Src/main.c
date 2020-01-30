@@ -98,7 +98,7 @@ int main(void)
   /* USER CODE BEGIN 2 */
     // Read Test
     Init(0);
-    Read(0x90000000, 16, Buf);
+    Read(0x9001e800, 16, Buf);
     Debug_Init();
     Debug_Print("Read\n");
     Debug_sprintf(Str, " 0:", Buf[0]);
@@ -110,8 +110,8 @@ int main(void)
     Debug_Print("\n");
     // Sector Erase Test
     Init(0);
-    SectorErase(0x90000000, 0x90010000);
-    Read(0x90000000, 16, Buf);
+    SectorErase(0x90010000, 0x90020000);
+    Read(0x9001e800, 16, Buf);
     Debug_Init();
     Debug_Print("SectorErase\n");
     Debug_sprintf(Str, " 0:", Buf[0]);
@@ -121,7 +121,7 @@ int main(void)
     Debug_sprintf(Str, " 2:", Buf[2]);
     Debug_Print(Str);
     Debug_Print("\n");
-#if 1
+#if 0
     // Mass Erase Test
     Init(0);
     MassErase();
@@ -141,8 +141,8 @@ int main(void)
     for (int32_t i = 0; i < 16; i++) {
         Buf[i] = i;
     }
-    Write(0x90000000, 16, Buf);
-    Read(0x90000000, 16, Buf);
+    Write(0x9001e800, 16, Buf);
+    Read(0x9001e800, 16, Buf);
     Debug_Init();
     Debug_Print("Write\n");
     Debug_sprintf(Str, " 0:", Buf[0]);

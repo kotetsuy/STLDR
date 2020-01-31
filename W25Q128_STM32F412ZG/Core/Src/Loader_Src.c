@@ -122,6 +122,11 @@ int WriteEnable (void)
     return 1;
 }
 
+int ResetMemory(void)
+{
+    return Init(0);
+}
+
 /*******************************************************************************
  Description :
  Write data to the device

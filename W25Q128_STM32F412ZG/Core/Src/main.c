@@ -48,7 +48,7 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
-__no_init QSPI_HandleTypeDef hqspi @0x2003E010;
+__no_init QSPI_HandleTypeDef hqspi @0x20000010;
 
 /* USER CODE BEGIN PV */
 

@@ -66,7 +66,7 @@ void *memset(void *buf, int ch, size_t n);
 /* USER CODE END 0 */
 
 #if 1
-__no_init __IO uint32_t dummy @0x2003E000;
+__no_init __IO uint32_t dummy @0x20000004;
 #else
 __IO uint32_t dummy;
 #endif

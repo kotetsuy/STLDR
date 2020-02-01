@@ -11,7 +11,8 @@ if __name__ == "__main__":
         try:
             istr = input()
             m = re.match("^:[0-9A-F]{2}[0-9A-F]{4}([0-9A-F]{2})([0-9A-F]{4})", istr)
-            if m != None and m.group(1) == "04" and (int(m.group(2),16) % 2) == 0:
+            if m != None and m.group(1) == "04" and (int(m.group(2),16) % 16) == 0:
+            #if m != None and m.group(1) == "04" and (int(m.group(2),16) % 2) == 0:
             #if m != None and m.group(1) == "04":
                 ostr += ":00000001FF\n"
                 fp.write(ostr)
